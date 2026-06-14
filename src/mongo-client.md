@@ -14,7 +14,7 @@ The API can be conveniently used with the Spring Framework (but it works without
 	<dependency>
 		<groupId>com.github.berkesa</groupId>
 		<artifactId>moleculer-java-mongo</artifactId>
-		<version>1.0.0</version>
+		<version>2.0.0</version>
 	</dependency>
 </dependencies>
 ```
@@ -23,7 +23,7 @@ The API can be conveniently used with the Spring Framework (but it works without
 
 ```gradle
 dependencies {
-	implementation group: 'com.github.berkesa', name: 'moleculer-java-mongo', version: '1.0.0' 
+	implementation group: 'com.github.berkesa', name: 'moleculer-java-mongo', version: '2.0.0' 
 }
 ```
 
