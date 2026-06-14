@@ -15,7 +15,7 @@ invokes instances according to the specified call strategy.
 
 To call an `Action`, use the "broker.call()" method.
 The broker looks for the `Service` (and the node) that has the `Action` and calls it.
-The `Action` call returns with a [Promise](https://berkesa.github.io/datatree/promise-introduction.html).
+The `Action` call returns with a Promise.
 `Promise` content will either be a [Tree](https://berkesa.github.io/datatree/introduction.html) or a `Throwable`.
 
 ```java

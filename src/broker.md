@@ -4,7 +4,7 @@ The `ServiceBroker` is the main component of the Moleculer Framework.
 Each Node connected to a Moleculer Cluster has a `ServiceBroker` instance.
 It registers `Services`, handles `Action` calls, and forwards Events between the Nodes.
 The Java-based `ServiceBroker` can run as standalone back-end (Windows or Linux) service
-or can be built into a J2EE application server as a standard Web Module.
+or can be built into a Jakarta EE application server as a standard Web Module.
 Another important feature of `ServiceBroker` is that it is basically designed to not block `Threads`,
 and can handle a large volume of requests in parallel.
 
@@ -179,7 +179,7 @@ Use the Moleculer Runner to create, start, stop the `ServiceBroker` simply and r
 This
 [demo project](https://moleculer-java.github.io/moleculer-spring-boot-demo/)
 uses Moleculer runner to run the application
-(in standalone mode or integrated into a J2EE server).
+(in standalone mode or integrated into a Jakarta EE server).
 [Read more about Moleculer Runner.](runner.html#types-of-moleculer-runners)  
 :::
 
@@ -192,8 +192,8 @@ List of all available `ServiceBrokerConfig` options:
 | namespace | String | "" | Namespace of nodes to segment your nodes on the same network. |
 | nodeID | String | hostname + PID | Node identifier. Must be unique in the cluster. |
 | internalServices | boolean | true | Register [internal services](internal-services.html). |
-| jsonReaders | String | null | Comma-separated list of the preferred JSON deserializer APIs (jackson, boon, fastjson, genson, etc.). |
-| jsonWriters | String | null | Comma-separated list of the preferred JSON serializer APIs (jackson, boon, fastjson, genson, etc.). |
+| jsonReaders | String | null | Comma-separated list of the preferred JSON deserializer APIs (jackson, gson, jodd, genson, etc.). |
+| jsonWriters | String | null | Comma-separated list of the preferred JSON serializer APIs (jackson, gson, jodd, genson, etc.). |
 | uidGenerator | UidGenerator | IncrementalUidGenerator | Implementation of the UID generator. |
 | strategyFactory | StrategyFactory | RoundRobinStrategyFactory | Implementation of the [Invocation Strategy](balancing.html#about-load-balancing). |
 | eventbus | Eventbus | DefaultEventbus | Implementation of the [Event Bus](services.html#events). |
@@ -201,7 +201,7 @@ List of all available `ServiceBrokerConfig` options:
 | cacher | Cacher | MemoryCacher | Implementation of the [service-level Cache](caching.html#caching-action-calls) |
 | serviceInvoker | ServiceInvoker | DefaultServiceInvoker | Implementation of the [Service Invoker](fault-tolerance.html#default-service-invoker). |
 | transporter | Transporter | null | Implementation of the [Transporter](transporters.html#types-of-transporters). |
-| monitor | Monitor | SigarMonitor | Implementation of the [CPU monitor](balancing.html#cpu-usage-based-strategy). |
+| monitor | Monitor | JmxMonitor | Implementation of the [CPU monitor](balancing.html#cpu-usage-based-strategy). |
 | shutDownThreadPools | boolean | true | Shut down thread pools during the shutdown stage. |
 
 This

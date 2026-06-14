@@ -1,0 +1,17 @@
+{
+  "name": "moleculer-java-site",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Documentation website for Moleculer for Java (VuePress 1.x).",
+  "homepage": "https://moleculer-java.github.io/site/",
+  "license": "MIT",
+  "scripts": {
+    "dev": "cd src && cross-env NODE_OPTIONS=--openssl-legacy-provider vuepress dev .",
+    "build": "cd src && cross-env NODE_OPTIONS=--openssl-legacy-provider vuepress build ."
+  },
+  "devDependencies": {
+    "cross-env": "7.0.3",
+    "vue-template-compiler": "2.6.14",
+    "vuepress": "1.9.10"
+  }
+}

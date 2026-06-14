@@ -3,7 +3,7 @@
 Moleculer has a built-in caching solution to accelerate **responses of service actions**.
 There are two types of caches:
 
-- [Local](caching.html#local-cachers) cache (eg. MemoryCacher, Off-Heap Cacher, some JCache implementations)
+- [Local](caching.html#local-cachers) cache (eg. MemoryCacher, some JCache implementations)
 - [Distributed](caching.html#distributed-cachers) cache (eg. Redis Cacher, some implementations of JCache are distributed)
 
 Local caches store data per node locally.
@@ -334,44 +334,6 @@ ServiceBroker broker = ServiceBroker.builder()
 | cleanup | int | 5 | Cleanup period time in SECONDS |
 | accessOrder | boolean | true | The ordering mode - true for access-order (LRU cache), false for insertion-order |
 
-### Off-heap memory cacher
-
-![](https://img.shields.io/badge/Node.js-Compatible-brightgreen.svg)  
-The `OHCacher` is similar to `MemoryCacher`, but stores entries in the off-heap RAM.
-This cache is a bit slower than `MemoryCacher` because it stores entries in a serialized and compressed form.
-`OHCacher` is the solution to store huge amount of data in memory;
-if you plan to store few thousands (or less) entries in the cache,
-use the faster `MemoryCacher`, otherwise use `OHCacher`.
-Supports global and entry-level TTL.
-
-::: warning Off-heap cacher dependencies
-To use Off-heap Cacher, add the following dependency to the build script:  
-[group: 'org.caffinitas.ohc', name: 'ohc-core-j8', version: '0.6.1'](https://mvnrepository.com/artifact/org.caffinitas.ohc/ohc-core-j8)
-:::
-
-**Configure off-heap cacher**
-
-```java{1}
-OHCacher cacher = new OHCacher();
-cacher.setTtl(60);
-cacher.setCleanup(10);
-cacher.setCapacity(2048);
-ServiceBroker broker = ServiceBroker.builder()
-                                    .cacher(cacher)
-                                    .build();
-```
-
-**Options**
-
-| Name | Type | Default | Description |
-| ---- | ---- | ------- | ----------- |
-| ttl | int | 0 | Default time-to-live in SECONDS (0 = no TTL) |
-| capacity | int | auto | Capacity for data over the whole cache in MEGABYTES |
-| segmentCount | int | number-of-cores * 2 | Number of segments (must be a power of 2) |
-| hashTableSize | int | 8192 | HashTable size (must be a power of 2) |
-| compressAbove | int | 1024 | Compress key and/or value above this size (BYTES) |
-| compressionLevel | int | 1 | Compression level (best speed = 1, best compression = 9) |
-
 ## Distributed cachers
 
 <div align="center">
@@ -389,7 +351,7 @@ Supports global and entry-level TTL configuration.
 
 ::: warning Redis dependencies
 To use Redis Cacher, add the following dependency to the build script:  
-[group: 'biz.paluch.redis', name: 'lettuce', version: '4.5.0.Final'](https://mvnrepository.com/artifact/biz.paluch.redis/lettuce)
+[group: 'io.lettuce', name: 'lettuce-core', version: '6.7.1.RELEASE'](https://mvnrepository.com/artifact/io.lettuce/lettuce-core)
 :::
 
 **Configure Redis cacher**
@@ -447,7 +409,7 @@ _redis-sentinel_ : // [*:* _password_@] _host1_[*:* _port1_] [, _host2_[*:* _por
 
 JSR-107 `JCache` is a standardized caching API.
 Core `JCache` API does NOT support entry-level TTL parameter.
-If you need this feature use `RedisCacher`, `MemoryCacher`, or Off-heap `Cacher`.
+If you need this feature use `RedisCacher` or `MemoryCacher`.
 `JCache` is implemented by various caching solutions:
 
 - Apache Ignite
@@ -464,7 +426,7 @@ The performance and operation of `JCache` implementations can be very different.
 
 ::: warning JCache dependencies
 To use JCache Cacher, add the following dependency to the build script:  
-[group: 'group: 'javax.cache', name: 'cache-api', version: '1.1.1''](https://mvnrepository.com/artifact/javax.cache/cache-api)  
+[group: 'javax.cache', name: 'cache-api', version: '1.1.1'](https://mvnrepository.com/artifact/javax.cache/cache-api)  
 and it is also necessary to put the dependencies of the JCache implementation in the classpath.
 :::
 

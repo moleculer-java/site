@@ -16,7 +16,7 @@ and there are modules for [RxJava](https://github.com/ReactiveX/RxJava) and Quas
 
 To summarize the essence of "Moleculer for Java" in a similar way, we could describe this:
 
-- [Moleculer](https://moleculer-java.github.io/moleculer-java/): Moleculer uses [Promises](https://berkesa.github.io/datatree/promise-introduction.html)
+- [Moleculer](https://moleculer-java.github.io/moleculer-java/): Moleculer uses Promises
 and manages sequential flow controls through "*then().then().then()*"
 [chaining](concepts.html#non-blocking-json-processing) of Promises
 
@@ -61,7 +61,7 @@ Because of this, Moleculer uses an
 instead of a certain JSON implementation.
 The `io.datatree.Tree` object is an **abstract layer** that uses an arbitrary JSON implementation.
 `Tree` API supports 18 popular
-[JSON implementations](serializers.html#json-serializer) (eg. Jackson, Gson, Boon, Jodd, FastJson),
+[JSON implementations](serializers.html#json-serializer) (eg. Jackson, Gson, Jodd, Genson, DSL-Json),
 and 10 non-JSON data formats (YAML, ION, BSON, MessagePack, etc.).
 Java-based JSON (and non-JSON) APIs are constantly evolving,
 so no specific implementation is forced on developers.
@@ -178,8 +178,8 @@ The output can be one of the following:
 ## Non-blocking JSON processing
 
 Moleculer uses ES6-like
-[Promises](https://berkesa.github.io/datatree/promise-introduction.html)
-(based on the Java8's `CompletableFuture` API) to avoid
+Promises
+(based on Java's `CompletableFuture` API) to avoid
 [callback hell](https://www.google.com/search?q=callback+hell+promise).
 An `io.datatree.Promise` is an object that may produce a simple value (or a `Tree` object) some time in the future:
 either a resolved value, or a reason that it's not resolved (e.g., a network error occurred).

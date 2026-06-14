@@ -1,0 +1,9 @@
+# Node / VuePress
+node_modules/
+package-lock.json
+src/.vuepress/.cache/
+src/.vuepress/.temp/
+.DS_Store
+*.log
+
+# Note: docs/ is the generated, GitHub-Pages-served build output and IS committed.

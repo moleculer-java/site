@@ -24,8 +24,8 @@ transporter.setSerializer(new JsonSerializer());
 ServiceBroker broker = ServiceBroker.builder()
                                     .nodeID("server-1")
                                     .transporter(transporter)
-                                    .readers("jackson,boon")
-                                    .writers("jackson,fast")
+                                    .readers("jackson,gson")
+                                    .writers("jackson,gson")
                                     .build();
 ```
 
@@ -38,11 +38,8 @@ The values of the "readers" and "writers" parameters are listed below:
 
 | Reader/writer ID | JSON API and Dependency |
 | ---------------- | ----------------------- |
-| "boon"    | [Boon JSON API](https://mvnrepository.com/artifact/io.fastjson/boon) |
 | "bson"    | [BSON (MongoDB)](https://mvnrepository.com/artifact/org.mongodb/bson) |
 | "dsl"     | [DSLJson](https://mvnrepository.com/artifact/com.dslplatform/dsl-json) |
-| "fast"    | [FastJson](https://mvnrepository.com/artifact/com.alibaba/fastjson) |
-| "flex"    | [Flexjson](https://mvnrepository.com/artifact/net.sf.flexjson/flexjson) |
 | "genson"  | [Genson](https://mvnrepository.com/artifact/com.owlike/genson) |
 | "gson"    | [Google Gson](https://mvnrepository.com/artifact/com.google.code.gson/gson) |
 | "jackson" | [Jackson JSON](https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind) |
@@ -50,17 +47,13 @@ The values of the "readers" and "writers" parameters are listed below:
 | "johnzon" | [Apache Johnzon](https://mvnrepository.com/artifact/org.apache.johnzon/johnzon-mapper) |
 | "jsonio"  | [JsonIO](https://mvnrepository.com/artifact/com.cedarsoftware/json-io) |
 | "nano"    | [NanoJson](https://mvnrepository.com/artifact/com.grack/nanojson) |
-| "simple"  | [JSON.simple](https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple) |
 | "smart"   | [Json-smart](https://mvnrepository.com/artifact/net.minidev/json-smart) |
-| "sojo"    | [SOJO](https://mvnrepository.com/artifact/net.sf.sojo/sojo) |
-| "util"    | [JsonUtil](https://mvnrepository.com/artifact/org.kopitubruk.util/JSONUtil) |
-| "ion"     | [Amazon Ion](https://mvnrepository.com/artifact/software.amazon.ion/ion-java) |
-| "jsoniter"| [Json Iterator](https://mvnrepository.com/artifact/com.jsoniter/jsoniter) |
+| "ion"     | [Amazon Ion](https://mvnrepository.com/artifact/com.amazon.ion/ion-java) |
 | "builtin" | Built-in JSON parser (no dependencies) |
 
-So, for example, if you want to use a "FastJSON" implementation,
+So, for example, if you want to use a "Gson" implementation,
 put the implementation reference in the "dependencies" block of the (build.gradle or pom.xml) build script,
-then set "readers" and "writers" to "fast". To verify, type "info" command into the REPL console.
+then set "readers" and "writers" to "gson". To verify, type "info" command into the REPL console.
 The "info" command will display the current Moleculer configuration, including the the JSON API which is in use.
 
 ## MessagePack Serializer
@@ -79,7 +72,7 @@ transporter.setSerializer(new MsgPackSerializer());
 
 ::: warning MessagePack dependencies
 To use MessagePack `Serializer`, add the following dependency to the build script:  
-[group: 'org.msgpack', name: 'msgpack', version: '0.6.12'](https://mvnrepository.com/artifact/org.msgpack/msgpack)  
+[group: 'org.msgpack', name: 'jackson-dataformat-msgpack', version: '0.9.9'](https://mvnrepository.com/artifact/org.msgpack/jackson-dataformat-msgpack)  
 :::
 
 ## BSON Serializer
@@ -94,7 +87,7 @@ transporter.setSerializer(new BsonSerializer());
 
 ::: warning BSON dependencies
 To use BSON `Serializer`, add the following dependency to the build script:  
-[group: 'de.undercouch', name: 'bson4jackson', version: '2.12.0'](https://mvnrepository.com/artifact/de.undercouch/bson4jackson)
+[group: 'de.undercouch', name: 'bson4jackson', version: '2.18.0'](https://mvnrepository.com/artifact/de.undercouch/bson4jackson)
 :::
 
 ## CBOR Serializer
@@ -110,7 +103,7 @@ transporter.setSerializer(new CborSerializer());
 
 ::: warning CBOR dependencies
 To use CBOR `Serializer`, add the following dependency to the build script:  
-[group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-cbor', version: '2.12.2'](https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor)
+[group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-cbor', version: '2.19.0'](https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor)
 :::
 
 ## Amazon ION Serializer
@@ -127,7 +120,7 @@ transporter.setSerializer(new IonSerializer());
 
 ::: warning Amazon ION dependencies
 To use ION `Serializer`, add the following dependency to the build script:  
-[group: 'software.amazon.ion', name: 'ion-java', version: '1.5.1'](https://mvnrepository.com/artifact/software.amazon.ion/ion-java)
+[group: 'com.amazon.ion', name: 'ion-java', version: '1.11.10'](https://mvnrepository.com/artifact/com.amazon.ion/ion-java)
 :::
 
 ## SMILE Serializer
@@ -145,7 +138,7 @@ transporter.setSerializer(new SmileSerializer());
 
 ::: warning SMILE dependencies
 To use SMILE `Serializer`, add the following dependency to the build script:  
-[group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-smile', version: '2.12.2'](https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-smile)
+[group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-smile', version: '2.19.0'](https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-smile)
 :::
 
 ## Custom Serializer

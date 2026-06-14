@@ -39,7 +39,7 @@ ServiceBroker broker = ServiceBroker.builder()
 
 ::: warning NATS dependencies
 To use NATS Transporter, add the following dependency to the build script:  
-[group: 'io.nats', name: 'jnats', version: '2.8.0'](https://mvnrepository.com/artifact/io.nats/jnats)
+[group: 'io.nats', name: 'jnats', version: '2.21.1'](https://mvnrepository.com/artifact/io.nats/jnats)
 :::
 
 Detailed example:
@@ -53,59 +53,6 @@ transporter.setSecure(true);
 transporter.setUsername("user");
 transporter.setPassword("secret");
 transporter.setNoRandomize(true);
-
-// Create Service Broker
-ServiceBroker broker = ServiceBroker.builder()
-                                    .nodeID("server-1")
-                                    .transporter(transporter)
-                                    .build();
-
-// Install distributed Services
-broker.createService(new Service("testService") {
-    Action testAction = ctx -> {
-
-        // Process request JSON (ctx.params),
-        // and create response JSON structure
-        return new Tree();
-    };
-});
-            
-// Connect the Service Broker to other Nodes
-broker.start();
-```
-
-### NATS Streaming Transporter
-
-![](https://img.shields.io/badge/Node.js-Compatible-brightgreen.svg)  
-Built-in transporter for [NATS](http://nats.io/) Streaming.
-NATS Server is a simple, high performance open source messaging system for cloud native applications,
-IoT messaging, and microservices architectures.
-
-```java
-NatsStreamingTransporter transporter = new NatsStreamingTransporter("nats://nats.server:4222");
-ServiceBroker broker = ServiceBroker.builder()
-                                    .nodeID("server-1")
-                                    .transporter(transporter)
-                                    .build();
-```
-
-::: warning NATS Streaming dependencies
-To use NATS Transporter, add the following dependency to the build script:  
-[group: 'io.nats', name: 'java-nats-streaming', version: '2.2.3'](https://mvnrepository.com/artifact/io.nats/java-nats-streaming)
-:::
-
-Detailed example:
-
-```java
-// Create Transporter
-NatsStreamingTransporter transporter = new NatsStreamingTransporter("host1");
-
-// Configure Transporter
-transporter.setClientId("client1");
-transporter.setClusterId("test-cluster");
-transporter.setMaxPubAcksInFlight(16384);
-transporter.setDiscoverPrefix("_STAN.discover");
-transporter.setTraceConnection(true);
 
 // Create Service Broker
 ServiceBroker broker = ServiceBroker.builder()
@@ -143,7 +90,7 @@ ServiceBroker broker = ServiceBroker.builder()
 
 ::: warning Redis dependencies
 To use Redis Transporter, add the following dependency to the build script:  
-[group: 'biz.paluch.redis', name: 'lettuce', version: '4.5.0.Final'](https://mvnrepository.com/artifact/biz.paluch.redis/lettuce)
+[group: 'io.lettuce', name: 'lettuce-core', version: '6.7.1.RELEASE'](https://mvnrepository.com/artifact/io.lettuce/lettuce-core)
 :::
 
 Detailed example:
@@ -212,7 +159,7 @@ ServiceBroker broker = ServiceBroker.builder()
 
 ::: warning AMQP dependencies
 To use AMQP Transporter, add the following dependency to the build script:  
-[group: 'com.rabbitmq', name: 'amqp-client', version: '5.11.0'](https://mvnrepository.com/artifact/com.rabbitmq/amqp-client)
+[group: 'com.rabbitmq', name: 'amqp-client', version: '5.25.0'](https://mvnrepository.com/artifact/com.rabbitmq/amqp-client)
 :::
 
 Detailed example:
@@ -250,7 +197,7 @@ ServiceBroker broker = ServiceBroker.builder()
 
 ::: warning Kafka dependencies
 To use Kafka Transporter, add the following dependency to the build script:  
-[group: 'org.apache.kafka', name: 'kafka-clients', version: '2.7.0'](https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients)
+[group: 'org.apache.kafka', name: 'kafka-clients', version: '4.3.0'](https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients)
 :::
 
 Detailed example:
@@ -284,7 +231,7 @@ ServiceBroker broker = ServiceBroker.builder()
 
 ::: warning JMS dependencies
 To use JMS Transporter, add the following dependency to the build script:  
-[group: 'javax.jms', name: 'javax.jms-api', version: '2.0.1'](https://mvnrepository.com/artifact/javax.jms/javax.jms-api)  
+[group: 'jakarta.jms', name: 'jakarta.jms-api', version: '3.1.0'](https://mvnrepository.com/artifact/jakarta.jms/jakarta.jms-api)  
 \+ dependencies of the JMS driver
 :::
 

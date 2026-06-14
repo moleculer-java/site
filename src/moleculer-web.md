@@ -7,23 +7,21 @@ Moleculer API Gateway provides full support for high-load **React**, **Angular**
 
 ### Features
 
-- Same code can run as a J2EE Servlet or as a high-performance Netty application without changing a single program line
-- WebSocket support (same API for Netty Server and J2EE Servers)
-- Supports server-side template engines (FreeMarker, Jade, Pebble, Thymeleaf, Mustache, Velocity)
+- Same code can run as a Jakarta EE Servlet or as a high-performance Netty application without changing a single program line
+- WebSocket support (same API for Netty Server and Jakarta EE Servers)
+- Supports server-side template engines (FreeMarker, Pebble, Thymeleaf, Mustache, Handlebars, Velocity)
 - Many built-in middlewares (ServeStatic, CORS headers, custom error messages, etc.)
 
-**The Moleculer API Gateway is compatible with the following Servlet Containers / J2EE Servers:**
+**The Moleculer API Gateway is compatible with the following Servlet Containers / Jakarta EE Servers:**
 
-- Oracle WebLogic Server V12
-- Red Hat JBoss Enterprise Application Platform V7
-- WebSphere Application Server V19 Liberty
-- GlassFish Server Open Source Edition V4 and V5
-- Apache Tomcat V7, V8 and V9
-- Eclipse Jetty V9
-- Payara Server V5
+- Apache Tomcat V10.1 and V11
+- Eclipse Jetty V12
+- Red Hat JBoss EAP V8 / WildFly V31+
+- GlassFish Server Open Source Edition V7
+- Payara Server V6
+- IBM WebSphere Liberty / Open Liberty
 
-API Gateway may work with other servers (it's built on the standard Servlet v3.1 API,
-but it also includes a fallback implementation for older servers). 
+API Gateway may work with other servers, too (it's built on the standard Jakarta Servlet 6.0 API). 
 
 <div align="center">
     <img src="web-runtimes.svg" alt="Runtimes" class="zoom" />
@@ -48,7 +46,7 @@ The number of servers (Moleculer nodes) can vary depending on the load.
     <dependency>
         <groupId>com.github.berkesa</groupId>
         <artifactId>moleculer-java-web</artifactId>
-        <version>1.3.2</version>
+        <version>2.0.0</version>
         <scope>runtime</scope>
     </dependency>
 </dependencies>
@@ -58,7 +56,7 @@ The number of servers (Moleculer nodes) can vary depending on the load.
 
 ```gradle
 dependencies {
-    implementation group: 'com.github.berkesa', name: 'moleculer-java-web', version: '1.3.2' 
+    implementation group: 'com.github.berkesa', name: 'moleculer-java-web', version: '2.0.0' 
 }
 ```
 
@@ -365,7 +363,7 @@ gateway.setBeforeCall((currentRoute, req, rsp, data) -> {
                         (ChannelHandlerContext) internal;
     } else {
 
-        // Moleculer is running under J2EE Server
+        // Moleculer is running under Jakarta EE Server
         HttpServletRequest servletRequest =
                         (HttpServletRequest) internal;
     }
@@ -780,7 +778,7 @@ The services.moleculer.web.middleware.session.`SessionHandler` object uses
 By default, `SessionHandler` keeps the contents of the "$session" blocks in memory for a specified time.
 `SessionHandler` looks for "$session" block based on the Session Cookie
 and copies it to all HTTP requests for the Session. This feature requires SessionCookie `Middleware`
-if the application is running on a Netty server (J2EE servers have their own cookie manager).
+if the application is running on a Netty server (Jakarta EE servers have their own cookie manager).
 
 ```java
 SessionHandler sessionHandler = new SessionHandler(broker);
@@ -914,7 +912,7 @@ both looping and conditional evaluation can be achieved using section tags proce
 
 ::: warning Mustache dependencies
 To use Mustache Template Engine, add the following dependency to the build script:  
-[group: 'com.github.spullara.mustache.java', name: 'compiler', version: '0.9.7'](https://mvnrepository.com/artifact/com.github.spullara.mustache.java/compiler)
+[group: 'com.github.spullara.mustache.java', name: 'compiler', version: '0.9.14'](https://mvnrepository.com/artifact/com.github.spullara.mustache.java/compiler)
 :::
 
 **Simple example**
@@ -991,7 +989,7 @@ In most cases it is possible to swap out Mustache with Handlebars and continue u
 
 ::: warning Handlebars dependencies
 To use Handlebars Template Engine, add the following dependency to the build script:  
-[group: 'com.github.jknack', name: 'handlebars', version: '4.2.0'](https://mvnrepository.com/artifact/com.github.jknack/handlebars)
+[group: 'com.github.jknack', name: 'handlebars', version: '4.5.1'](https://mvnrepository.com/artifact/com.github.jknack/handlebars)
 :::
 
 **Simple example**
@@ -1059,13 +1057,13 @@ The templates have the same syntax as the Mustache syntax.
 
 ### DataTree Template Engine
 
-Server-side template engine based on [DataTreeTemplates API](https://berkesa.github.io/datatree/template-introduction.html).
+Server-side template engine based on DataTreeTemplates API.
 Small and fast template engine capable of producing html, xml, and plain text files.
 The template engine works with hierarchical collection structures - similar to the Mustache Engine but with expandable features.
 
 ::: warning DataTreeTemplates dependencies
 To use DataTree Template Engine, add the following dependency to the build script:  
-[group: 'com.github.berkesa', name: 'datatree-templates', version: '1.1.4'](https://mvnrepository.com/artifact/com.github.berkesa/datatree-templates)
+[group: 'com.github.berkesa', name: 'datatree-templates', version: '2.0.0'](https://mvnrepository.com/artifact/com.github.berkesa/datatree-templates)
 :::
 
 **Simple example**
@@ -1107,7 +1105,7 @@ gateway.setTemplateEngine(templateEngine);
 
 **Sample template syntax**
 
-[Learn more about DataTreeTemplates syntax.](https://berkesa.github.io/datatree/template-syntax.html)  
+Learn more about DataTreeTemplates syntax.  
 [The following template can be called with this code.](moleculer-web.html#template-engines)
 
 ```html
@@ -1140,7 +1138,7 @@ Templates are written in the FreeMarker Template Language (FTL), which is a simp
 
 ::: warning FreeMarker dependencies
 To use FreeMarker Template Engine, add the following dependency to the build script:  
-[group: 'org.freemarker', name: 'freemarker', version: '2.3.31'](https://mvnrepository.com/artifact/org.freemarker/freemarker)
+[group: 'org.freemarker', name: 'freemarker', version: '2.3.34'](https://mvnrepository.com/artifact/org.freemarker/freemarker)
 :::
 
 **Simple example**
@@ -1205,75 +1203,6 @@ gateway.setTemplateEngine(templateEngine);
 </html>
 ```
 
-### Jade Template Engine
-
-Server-side template engine based on [Jade4J API](https://github.com/neuland/jade4j).
-Jade4J's intention is to be able to process Jade Templates in Java without the need of a JavaScript environment,
-while being fully compatible with the original Jade syntax.
-
-::: warning Jade dependencies
-To use Jade Template Engine, add the following dependency to the build script:  
-[group: 'de.neuland-bfi', name: 'jade4j', version: '1.3.2'](https://mvnrepository.com/artifact/de.neuland-bfi/jade4j)
-:::
- 
-**Simple example**
-
-```java
-JadeEngine templateEngine = new JadeEngine();
-templateEngine.setTemplatePath("/www"); // Root path of templates
-gateway.setTemplateEngine(templateEngine);
-```
-
-**Advanced example**
-
-```java
-// Development or production mode?
-boolean developmentMode = true;
-
-// Create Jade Template Engine
-JadeEngine templateEngine = new JadeEngine();
-
-// Set basic properties
-templateEngine.setTemplatePath("/www"); // File or classpath to templates
-templateEngine.setReloadable(developmentMode); // Autoreload on/off
-templateEngine.setDefaultExtension("html"); // Default extension
-
-// Set Jade4J-specific properties
-JadeConfiguration config = templateEngine.getConfiguration();
-config.setPrettyPrint(false);
-config.setMode(Jade4J.Mode.HTML);
-
-// Enable multilingualism, and language file reloading in development
-// mode (language files can be in YAML or Java Properties format)
-templateEngine.setMessageLoader(new DefaultMessageLoader(
-                                "languages/messages", // Path and message file prefix
-                                "yml", // Use YAML format (or use "properties" format)
-                                developmentMode); // Autoreload on/off
-
-// Set the Template Engine of ApiGateway
-gateway.setTemplateEngine(templateEngine);
-```
-
-**Sample template syntax**
-
-[The following template can be called with this code.](moleculer-web.html#template-engines)
-
-```jade
-doctype html
-html
-  body
-    include header
-    p A: #{a}
-    p B: #{b}
-    p C: #{c}
-    table
-      for row in table
-        tr
-          td #{row.first}
-          td #{row.second}
-          td #{row.third}
-```
-
 ### Pebble Template Engine
 
 Server-side template engine based on [Pebble API](https://github.com/PebbleTemplates/pebble).
@@ -1282,7 +1211,7 @@ It features templates inheritance and easy-to-read syntax, ships with built-in a
 
 ::: warning Pebble dependencies
 To use Pebble Template Engine, add the following dependency to the build script:  
-[group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'](https://mvnrepository.com/artifact/com.mitchellbosecke/pebble)
+[group: 'io.pebbletemplates', name: 'pebble', version: '3.2.4'](https://mvnrepository.com/artifact/io.pebbletemplates/pebble)
 :::
 
 **Simple example**
@@ -1351,7 +1280,7 @@ allowing for stronger collaboration in development teams.
 
 ::: warning Thymeleaf dependencies
 To use Thymeleaf Template Engine, add the following dependency to the build script:  
-[group: 'org.thymeleaf', name: 'thymeleaf', version: '3.0.12.RELEASE'](https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf)
+[group: 'org.thymeleaf', name: 'thymeleaf', version: '3.1.5.RELEASE'](https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf)
 :::
 
 **Simple example**
@@ -1489,7 +1418,7 @@ Templates should refer to language constants as a common variable whose name beg
 The insertion of variables for each template works according to their own syntax:
 
 - Pebble, Mustache and Handlebars syntax: { {msg.first} }
-- Jade and DataTree syntax: #{msg.first}
+- DataTree syntax: #{msg.first}
 - Thymeleaf and FreeMarker syntax: ${msg.first}
 
 Language files can contain not only name-value pairs but also
@@ -1516,7 +1445,7 @@ Action html = ctx -> {
 ## WebSocket handling
 
 WebSocket is a HTTP-based protocol, providing realtime communication between the server and browser.
-The Moleculer API Gateway WebSocket implementation **works the same** on all J2EE servers (Servlet containers) and Netty (in "standalone" run mode).
+The Moleculer API Gateway WebSocket implementation **works the same** on all Jakarta EE servers (Servlet containers) and Netty (in "standalone" run mode).
 The WebSocket communication implemented by Moleculer is **not duplex**,
 it can only send a message from the server to the browser (or other WebSocket client API).
 Reverse (client-to-server) communication is possible **with REST** requests.
@@ -1572,7 +1501,7 @@ and the "app.js" application that processes incoming messages:
 The structure of "app.js" that processes messages is similar to the following:
 
 ```js{6,10}
-// Netty or J2EE WebSocket connection
+// Netty or Jakarta EE WebSocket connection
 var ws;
 
 // Handle connect

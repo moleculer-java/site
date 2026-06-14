@@ -9,7 +9,7 @@ Spring application or an XML-less
 There are two sub-types of Moleculer Runner:
 
 - Standalone runtime, with (optional) Netty Server (it's the `services.moleculer.config.MoleculerRunner`)
-- Servlet-based J2EE runtime (implemented in `services.moleculer.web.servlet.MoleculerServlet`)
+- Servlet-based Jakarta EE runtime (implemented in `services.moleculer.web.servlet.MoleculerServlet`)
 
 ## Standalone runtime
 
@@ -64,16 +64,15 @@ for more information about logger configuration in standalone mode.
 ## Servlet-based runtime
 
 The Moleculer Servlet can also load an XML-based or Spring Boot-based application.
-It's built on the standard Servlet v3.1 API, but it also includes a fallback implementation for older servers.
-This Servlet is tested and compatible with the following Servlet Containers / J2EE Servers:
+It's built on the standard Jakarta Servlet 6.0 API (Jakarta EE 10).
+This Servlet is compatible with the following Servlet Containers / Jakarta EE Servers:
 
-- Oracle WebLogic Server V12
-- Red Hat JBoss Enterprise Application Platform V7
-- WebSphere Application Server V19 Liberty
-- GlassFish Server Open Source Edition V4 and V5
-- Apache Tomcat V7, V8 and V9
-- Eclipse Jetty V9
-- Payara Server V5
+- Apache Tomcat V10.1 and V11
+- Eclipse Jetty V12
+- Red Hat JBoss EAP V8 / WildFly V31+
+- GlassFish Server Open Source Edition V7
+- Payara Server V6
+- IBM WebSphere Liberty / Open Liberty
 
 Adding the
 [Moleculer Web API Gateway](moleculer-web.html#about-api-gateway)
@@ -83,7 +82,7 @@ module to the dependency list requires Servlet-based deployment.
 
 ```xml{13,14}
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" ...>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee" ...>
     <listener>
         <listener-class>services.moleculer.web.servlet.websocket.EndpointDeployer</listener-class>
     </listener>
@@ -113,7 +112,7 @@ module to the dependency list requires Servlet-based deployment.
 
 ```xml{13,14}
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" ...>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee" ...>
     <listener>
         <listener-class>services.moleculer.web.servlet.websocket.EndpointDeployer</listener-class>
     </listener>

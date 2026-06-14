@@ -76,7 +76,7 @@ CPU-based load balancing works even when the application is heterogeneous (consi
 
 ```java
 // Create CPU monitor
-SigarMonitor cpuMonitor = new SigarMonitor();
+JmxMonitor cpuMonitor = new JmxMonitor();
         
 // Create CPU-based strategy
 CpuUsageStrategyFactory invocationStrategy = new CpuUsageStrategyFactory();
@@ -91,10 +91,10 @@ ServiceBroker broker = ServiceBroker.builder()
 ```
 
 To determine CPU usage, `ServiceBroker` needs a `Monitor` instance that can query the current CPU usage.
-Such `Monitor` is the `SigarMonitor` based on the [Sigar API](https://github.com/hyperic/sigar).
-It requires the presence of [JAR files for the Sigar API](https://mvnrepository.com/artifact/org.hyperic/sigar/1.6.4) in the Java classpath.
-It is also necessary to copy the [native Sigar binaries](https://github.com/hyperic/sigar/wiki/binaries) into the "java.library.path" directory.
-Using the Sigar API is optional; if it not found on the classpath, `ServiceBroker` will automatically use the **JMX-based** CPU monitor.
+The default is the `JmxMonitor`, which reads the CPU load through the JVM's built-in
+**JMX** (`java.lang.management`) API — it needs no native libraries or extra dependencies.
+If JMX cannot report a CPU load on the given platform, `ServiceBroker` automatically falls back
+to the `ConstantMonitor` (which always reports the same value).
 
 **Strategy options**
 

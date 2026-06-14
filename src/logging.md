@@ -35,16 +35,16 @@ public class Math extends Service {
 ## Dependencies
 
 The APIs used by Moleculer Framework use multiple logging implementations (eg. Apache Commons Logging, Log4j, JDK logging).
-It is advisable to redirect all of them to the JDK logger as this will work with standalone (Netty-based) runtime and within J2EE servers.
+It is advisable to redirect all of them to the JDK logger as this will work with standalone (Netty-based) runtime and within Jakarta EE servers.
 To do this, add the following dependencies to the build file:
 
 ```gradle
 dependencies {
 
-    implementation group: 'org.slf4j', name: 'slf4j-api',        version: '1.7.30'
-    implementation group: 'org.slf4j', name: 'slf4j-jdk14',      version: '1.7.30'
-    implementation group: 'org.slf4j', name: 'log4j-over-slf4j', version: '1.7.30'
-    implementation group: 'org.slf4j', name: 'jcl-over-slf4j',   version: '1.7.30'
+    implementation group: 'org.slf4j', name: 'slf4j-api',        version: '2.0.18'
+    implementation group: 'org.slf4j', name: 'slf4j-jdk14',      version: '2.0.18'
+    implementation group: 'org.slf4j', name: 'log4j-over-slf4j', version: '2.0.18'
+    implementation group: 'org.slf4j', name: 'jcl-over-slf4j',   version: '2.0.18'
 
     // ...other dependencies...
 
@@ -67,7 +67,7 @@ By default, Moleculer uses `services.moleculer.logger.AsyncFileLogger` to write 
 This logger writes files from a **separate Thread** and creates a **new file every day**.
 It can **compress** and/or **delete** old log files (see the "compressAfter" and "deleteAfter" properties).
 Setting the "logToConsole" parameter to "true" writes a **colored** log to `System.out`
-(optional [dependency of colored output](https://mvnrepository.com/artifact/com.diogonunes/JCDP/2.0.3.1))
+(optional [dependency of colored output](https://mvnrepository.com/artifact/com.diogonunes/JColor/5.5.1))
 In the "production" stage, the "logToConsole" parameter should be set to "false",
 while in the "development" stage it should be set to "true":
 
@@ -89,23 +89,23 @@ With the above configuration and dependency settings the following logging struc
     <img src="logging.svg" alt="Logging" class="zoom" />
 </div>
 
-## Logging in J2EE environment
+## Logging in Jakarta EE environment
 
-When using Spring Boot, the logger is mostly J2EE's own logger, but this is optional.
+When using Spring Boot, the logger is mostly the Jakarta EE server's own logger, but this is optional.
 You can turn off the initialization of Spring Boot logging,
 by setting the "org.springframework.boot.logging.LoggingSystem" property to "none".
-Thus, the Moleculer Application will use the J2EE server's default logging mechanism.
+Thus, the Moleculer Application will use the Jakarta EE server's default logging mechanism.
 In "web.xml" it looks like this:
 
 ```xml{11}
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://java.sun.com/xml/ns/javaee" ...>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee" ...>
     
     <servlet>
         <servlet-name>Moleculer Servlet</servlet-name>
         <servlet-class>services.moleculer.web.servlet.MoleculerServlet</servlet-class>
 
-        <!-- USE THE J2EE SERVER'S LOGGING SYSTEM -->
+        <!-- USE THE JAKARTA EE SERVER'S LOGGING SYSTEM -->
                 
         <init-param>
             <param-name>-Dorg.springframework.boot.logging.LoggingSystem</param-name>
@@ -123,5 +123,5 @@ In "web.xml" it looks like this:
 
 [This demo project](https://moleculer-java.github.io/moleculer-spring-boot-demo/)
 demonstrating some of the capabilities of Moleculer.
-In the project, logging is set to both runtime modes (J2EE and Netty).
+In the project, logging is set to both runtime modes (Jakarta EE and Netty).
 The project can be imported into the Eclipse IDE or IntelliJ IDEA.

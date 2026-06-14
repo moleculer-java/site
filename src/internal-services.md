@@ -48,8 +48,8 @@ broker.call("$node.list").then(rsp -> {
     ],
     "client":{
       "type":"java",
-      "version":"1.2.5",
-      "langVersion":"1.8.0_162-ea"
+      "version":"2.0.0",
+      "langVersion":"21.0.4"
     }
   }
 ]
@@ -315,8 +315,8 @@ broker.call("$node.health").then(rsp -> {
   },
   "client":{
     "type":"java",
-    "version":"1.2.5",
-    "langVersion":"1.8.0_162-ea"
+    "version":"2.0.0",
+    "langVersion":"21.0.4"
   },
   "net":{
     "ip":[

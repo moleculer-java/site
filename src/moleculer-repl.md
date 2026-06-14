@@ -13,7 +13,7 @@ It is also possible to create **custom commands**. The console can be used via s
     <dependency>
         <groupId>com.github.berkesa</groupId>
         <artifactId>moleculer-java-repl</artifactId>
-        <version>1.3.0</version>
+        <version>2.0.0</version>
     </dependency>
 </dependencies>
 ```
@@ -22,7 +22,7 @@ It is also possible to create **custom commands**. The console can be used via s
 
 ```gradle
 dependencies {
-    implementation group: 'com.github.berkesa', name: 'moleculer-java-repl', version: '1.3.0' 
+    implementation group: 'com.github.berkesa', name: 'moleculer-java-repl', version: '2.0.0' 
 }
 ```
 

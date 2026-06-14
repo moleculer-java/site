@@ -3,7 +3,7 @@
 The "moleculer-java-httpclient" is an asynchronous HTTP client API,
 specially designed for Java-based Moleculer Ecosystem.
 The client is suitable for handling large numbers of REST requests,
-and it can receive WebSocket messages from a Netty/J2EE-based Moleculer application.
+and it can receive WebSocket messages from a Netty/Jakarta-EE-based Moleculer application.
 The built-in Heartbeat function automatically checks if a connection has been lost.
 If a connection is lost, the client automatically rebuilds the connection.
 
@@ -17,7 +17,7 @@ If a connection is lost, the client automatically rebuilds the connection.
 	<dependency>
 		<groupId>com.github.berkesa</groupId>
 		<artifactId>moleculer-java-httpclient</artifactId>
-		<version>1.0.0</version>
+		<version>2.0.0</version>
 	</dependency>
 </dependencies>
 ```
@@ -26,7 +26,7 @@ If a connection is lost, the client automatically rebuilds the connection.
 
 ```gradle
 dependencies {
-	implementation group: 'com.github.berkesa', name: 'moleculer-java-httpclient', version: '1.0.0' 
+	implementation group: 'com.github.berkesa', name: 'moleculer-java-httpclient', version: '2.0.0' 
 }
 ```
 

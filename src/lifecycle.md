@@ -97,7 +97,7 @@ However, you can create "init" / "destroy" functions for Spring, regardless of t
 In this case, the start and stop order is as follows:
 
 ```java
-import javax.annotation.*;
+import jakarta.annotation.*;
 import org.springframework.stereotype.Controller;
 import io.datatree.Tree;
 import services.moleculer.ServiceBroker;

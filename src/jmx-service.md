@@ -17,7 +17,7 @@ This events can be received by any node subscribed to this event, including Node
 	<dependency>
 		<groupId>com.github.berkesa</groupId>
 		<artifactId>moleculer-java-jmx</artifactId>
-		<version>1.2.1</version>
+		<version>2.0.0</version>
 	</dependency>
 </dependencies>
 ```
@@ -26,7 +26,7 @@ This events can be received by any node subscribed to this event, including Node
 
 ```gradle
 dependencies {
-	implementation group: 'com.github.berkesa', name: 'moleculer-java-jmx', version: '1.2.1' 
+	implementation group: 'com.github.berkesa', name: 'moleculer-java-jmx', version: '2.0.0' 
 }
 ```
 

@@ -14,7 +14,7 @@ The graph below shows the speed of the various JSON parsers.
 The vertical axis is the parsed/deserialized JSON packets per second per CPU core.
 A higher value means a faster parser.
 There is more than a 10-fold difference between the slowest and the fastest APIs.
-The fastest three APIs are "**Boon**", "**Jodd**" and "**Jackson**":
+The fastest APIs are "**Jodd**", "**Jackson**" and "**DSL-Json**":
 
 <div align="center">
     <img src="perf/json-readers.png" alt="JSON Parsers / Deserializers" />
@@ -26,7 +26,7 @@ The graph below shows the speed of the various JSON writers.
 The vertical axis is the generated/serialized JSON packets per second per CPU core.
 A higher value means a faster generator.
 There is more than a 6x difference between the slowest and the fastest APIs.
-The fastest two APIs are "**Jackson**" and "**FastJson**":
+The fastest two APIs are "**Jackson**" and "**DSL-Json**":
 
 <div align="center">
     <img src="perf/json-writers.png" alt="JSON Generators / Serializers" />
@@ -48,13 +48,13 @@ ServiceBroker broker = ServiceBroker.builder()
 ```
 
 If you want to configure different JSON APIs for reading and writing,
-use the Boon API for reading, and the Jackson API for writing:
+use the Jodd API for reading, and the Jackson API for writing:
 
 ```java
 ServiceBroker broker = ServiceBroker.builder()
                                     .nodeID("server-1")
                                     .transporter(transporter)
-                                    .readers("boon,jackson") // Use "Boon", fallback API is "Jackson"
+                                    .readers("jodd,jackson") // Use "Jodd", fallback API is "Jackson"
                                     .writers("jackson")      // Always use "Jackson" as serializer
                                     .build();
 ```
@@ -367,7 +367,7 @@ as much of the program as possible must be coded in a non-blocking manner.
 Unfortunately, not all backend services have a non-blocking API in Java,
 but if you have one, use it and don't block the Thread.
 If there is a non-blocking API for a backend service, it can be
-converted to [Promise](https://berkesa.github.io/datatree/promise-introduction.html).
+converted to Promise.
 
 The following section describes how to convert various non-blocking techniques to Promise-based methods.
 

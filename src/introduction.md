@@ -12,22 +12,22 @@ common platform for modules written in different languages.
 - Polyglot (implemented in [multiple languages](https://github.com/moleculerjs/awesome-moleculer#polyglot-implementations))
 - High-performance, non-blocking messaging and event APIs
 - Asynchronous REST Services for high-load React, Angular or VueJS applications
-- Runs as a standard J2EE application or with a built-in Netty server
+- Runs as a standard Jakarta EE application or with a built-in Netty server
 - Fault Tolerance and high availability (circuit breaker, request timeout, retry, etc.)
 - Load balanced requests & events (round-robin, random, cpu-usage, network latency, sharding)
 - Pluggable transporters (P2P TCP, NATS, MQTT, Redis, AMQP, Kafka, JMS, Ably.io)
 - Pluggable serializers (JSON, MessagePack, BSON, CBOR, Ion, Smile)
-- Built-in caching solution (memory cache, Redis cache, off-heap cache, JCache)
+- Built-in caching solution (memory cache, Redis cache, JCache)
 - Send and receive streamed data (for transferring large files, media content)
 - Built-in service registry & dynamic service discovery
 - Supports WebSockets, SSL, Middlewares (for using cache, encryption or logging modules)
-- Supports template engines for generating server-side HTMLs (FreeMarker, Jade, Thymeleaf, etc.)
+- Supports template engines for generating server-side HTMLs (FreeMarker, Mustache, Thymeleaf, Pebble, etc.)
 - Interactive developer console (local or telnet) with custom commands
 - Open source - Moleculer is 100% open source and free of charge
 
 ## Prerequisites
 
-Moleculer Java requires Java 8.
+Moleculer Java requires Java 21.
 
 ## REST service example
 
@@ -72,9 +72,9 @@ The Moleculer packages can be downloaded from the central
 
 ```gradle
 dependencies {
-    implementation group: 'org.slf4j',          name: 'slf4j-jdk14',        version: '1.7.30'
-    implementation group: 'com.github.berkesa', name: 'moleculer-java',     version: '1.2.17'
-    implementation group: 'com.github.berkesa', name: 'moleculer-java-web', version: '1.3.2' 
+    implementation group: 'org.slf4j',          name: 'slf4j-jdk14',        version: '2.0.18'
+    implementation group: 'com.github.berkesa', name: 'moleculer-java',     version: '2.0.0'
+    implementation group: 'com.github.berkesa', name: 'moleculer-java-web', version: '2.0.0' 
 }
 ```
 
@@ -85,17 +85,17 @@ dependencies {
     <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-jdk14</artifactId>
-        <version>1.7.30</version>
+        <version>2.0.18</version>
     </dependency>
     <dependency>
         <groupId>com.github.berkesa</groupId>
         <artifactId>moleculer-java</artifactId>
-        <version>1.2.17</version>
+        <version>2.0.0</version>
     </dependency>
     <dependency>
         <groupId>com.github.berkesa</groupId>
         <artifactId>moleculer-java-web</artifactId>
-        <version>1.3.2</version>
+        <version>2.0.0</version>
     </dependency>
 </dependencies>
 ```

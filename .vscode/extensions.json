@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "yzhang.markdown-all-in-one",
+    "DavidAnson.vscode-markdownlint",
+    "Vue.volar",
+    "esbenp.prettier-vscode"
+  ]
+}
