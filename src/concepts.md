@@ -27,6 +27,9 @@ Most internal objects and properties have the same names in both implementations
 After a relatively short period of time, Java programmers understand the code of a Node.js-based Moleculer service and vice versa.
 This help to increase the skills of the programmers and make their collaboration more efficient.
 
+To see this parallel in action &mdash; a Java node and a Node.js node joining one cluster and calling
+each other's services &mdash; see [Java ↔ Node.js Interoperability](interop-overview.html).
+
 Most Moleculer modules do not require any specific explanation, they are quite similar in use in the two programming languages
 (such modules include
 [Cachers](caching.html#caching-action-calls),

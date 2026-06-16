@@ -11,7 +11,9 @@
   },
   "devDependencies": {
     "cross-env": "7.0.3",
+    "vue-tabs-component": "^1.5.0",
     "vue-template-compiler": "2.6.14",
-    "vuepress": "1.9.10"
+    "vuepress": "1.9.10",
+    "vuepress-plugin-tabs": "^0.3.0"
   }
 }

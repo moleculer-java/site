@@ -2,11 +2,14 @@ module.exports = {
 
 	theme: '@vuepress/theme-default',
 	title: 'Moleculer',
-	description: 'Progressive microservices framework for Java',
+	description: 'Build hybrid microservices: call Java from Node.js and Node.js from Java over one Moleculer cluster.',
 	base: '/site/',
 	dest: '../docs',
 
     plugins: [
+		[
+			'tabs'
+		],
 		[
 			'@vuepress/back-to-top'
 		],
@@ -60,10 +63,22 @@ module.exports = {
 		lastUpdated:  'Last Updated',		
 		nav: [
 			{ text: 'Home', link: '/' },
-			{ text: 'Documentation', link: 'introduction' },
+			{ text: 'Documentation', link: 'interop-overview' },
 			{ text: 'Donate', link: 'https://www.patreon.com/berkesa' }
 		],
 		sidebar: [
+			{
+				title: 'Java ↔ Node.js Interop',
+				sidebarDepth: 2,
+				children: [
+					['interop-overview',     'Overview — the two doors'],
+					['interop-setup',        'Setup — one cluster'],
+					['quickstart',           'Quick start'],
+					['call-java-from-node',  'Call Java from Node.js'],
+					['call-node-from-java',  'Call Node.js from Java'],
+					['interop-data-types',   'Data types & features']
+				]
+			},
 			{
 				title: 'Getting started',
 				sidebarDepth: 2,
@@ -73,8 +88,8 @@ module.exports = {
 				]
 			},
 			{
-				title: 'Moleculer core',
-				sidebarDepth: 2,
+				title: 'Core reference (Java)',
+				sidebarDepth: 1,
 				children: [
 					['broker',            'Service Broker'],
 					['services',          'Services'],
@@ -91,8 +106,8 @@ module.exports = {
 				]
 			},
 			{
-				title: 'Clustering',
-				sidebarDepth: 2,
+				title: 'Clustering reference',
+				sidebarDepth: 1,
 				children: [
 					['transporters',    'Transporters'],
 					['serializers',     'Serializers'],
@@ -101,9 +116,9 @@ module.exports = {
 				]
 			},
 			{
-				title: 'Modules',
-				sidebarDepth: 2,
-				children: [				
+				title: 'Java modules (optional)',
+				sidebarDepth: 1,
+				children: [
 					['moleculer-web',  'Web API Gateway'],
 					['moleculer-repl', 'Moleculer REPL'],
 					['mongo-client',   'MongoDB client'],
