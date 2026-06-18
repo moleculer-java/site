@@ -63,6 +63,12 @@ public class UserDAO extends MongoDAO {
 }
 ```
 
+> **Where does `eq(...)` come from?** `eq` — and the other query operators (`and`, `or`, `lt`,
+> `gt`, `in`, `regex`, …) — are **methods inherited from the `MongoDAO` superclass** (declared in
+> `MongoFilters`). They wrap the MongoDB driver's filter operators and return a datatree `Tree`, so
+> you do **not** import them separately; they are in scope because your DAO `extends MongoDAO`. This
+> is the Java counterpart of passing a filter object to a query in Node.js.
+
 The use of the UserDAO is illustrated by the following example (without Spring):
 
 ```java
@@ -533,7 +539,7 @@ find(eq("field1", 123), null, 0, 10).then(res -> {
  // Find operation finished
  int maxNumberOfSelectableDocuments = res.get("count");
  for (Tree doc: res.get("rows")) {
-   String firstName = res.get("firstName", "");
+   String firstName = doc.get("firstName", "");
  }
  return res;
 

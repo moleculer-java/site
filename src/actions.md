@@ -80,8 +80,8 @@ broker.call("service.action",
 
 | Name | Type | Default | Description |
 | ------- | ----- | ------- | ------- |
-| timeout | Number | null | Timeout of request in milliseconds. [Read more](fault-tolerance.html#Timeout) |
-| retries | Number | null | Count of retry of request. If the request is timed out or any I/O error occurs, broker will try to call again. [Read more](fault-tolerance.html#Retry) |
+| timeout | long | null | Timeout of request in milliseconds. [Read more](fault-tolerance.html#Timeout) |
+| retryCount | int | null | Count of retry of request. If the request is timed out or any I/O error occurs, broker will try to call again. [Read more](fault-tolerance.html#Retry) |
 | nodeID | String | null | Target nodeID. If set, it will make a direct call to the given node. |
 
 ### Usages
@@ -90,7 +90,7 @@ broker.call("service.action",
 
 ```java
 broker.call("user.list").then(rsp -> {
-    logger.info("User list: ", rsp));
+    logger.info("User list: {}", rsp);
 });
 ```
 
@@ -98,7 +98,7 @@ broker.call("user.list").then(rsp -> {
 
 ```java
 broker.call("user.get", "id", 3).then(rsp -> {
-    logger.info("User: ", rsp));
+    logger.info("User: {}", rsp);
 });
 ```
 
@@ -107,7 +107,7 @@ broker.call("user.get", "id", 3).then(rsp -> {
 ```java
 Tree rsp = broker.call("user.get", "id", 3)
                  .waitFor(10, TimeUnit.SECONDS);
-logger.info("User: ", rsp);
+logger.info("User: {}", rsp);
 ```
 
 ::: warning Do not block
@@ -125,7 +125,7 @@ Asynchronous operations can be organized into a "waterfall sequence" using these
 broker.call("user.recommendation",
             "limit", 5,
             CallOptions.retryCount(3)).then(rsp -> {
-               logger.info("User: ", rsp));
+               logger.info("User: {}", rsp);
             });
 
 // Execution in a waterfall sequence
@@ -133,7 +133,7 @@ return Promise.resolve().then(rsp -> {
     Options opts = CallOptions.retryCount(3);
     return broker.call("user.recommendation", "limit", 5, opts);
 }).then(rsp -> {
-    logger.info("User: ", rsp));
+    logger.info("User: {}", rsp);
 });
 ```
 

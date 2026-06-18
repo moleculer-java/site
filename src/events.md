@@ -41,10 +41,10 @@ public class PaymentService extends Service {
     @Subscribe("order.created")
     @Group("other")
     Listener orderCreated = ctx -> {
-        logger.info("Payload:", ctx.params);
-        logger.info("Sender:", ctx.nodeID);
-        logger.info("Metadata:", ctx.params.getMeta());
-        logger.info("The called event name:", ctx.name);
+        logger.info("Payload: {}", ctx.params);
+        logger.info("Sender: {}", ctx.nodeID);
+        logger.info("Metadata: {}", ctx.params.getMeta());
+        logger.info("The called event name: {}", ctx.name);
 
         // Example of parsing the "params" block:
         String firstName = ctx.params.get("firstName", "defaultValue");
@@ -200,10 +200,10 @@ public class AccountService extends Service {
 
     @Subscribe("user.created")
     Listener userCreated = ctx -> {
-        logger.info("Payload:", ctx.params);
-        logger.info("Sender:", ctx.nodeID);
-        logger.info("Metadata:", ctx.params.getMeta());
-        logger.info("The called event name:", ctx.name);
+        logger.info("Payload: {}", ctx.params);
+        logger.info("Sender: {}", ctx.nodeID);
+        logger.info("Metadata: {}", ctx.params.getMeta());
+        logger.info("The called event name: {}", ctx.name);
 
         // Emit a new, nested Event
         Tree payload = new Tree();
@@ -224,13 +224,13 @@ public class MyService extends Service {
     // Subscribe to "user.created" event
     @Subscribe("user.created")
     Listener userCreated = ctx -> {
-        logger.info("User created event received:", ctx.params);
+        logger.info("User created event received: {}", ctx.params);
     };
 
     // Subscribe to all "user" events
     @Subscribe("user.*")
     Listener userEvents = ctx -> {
-        logger.info("User event event received:", ctx.params);
+        logger.info("User event received: {}", ctx.params);
     };
         
     // Subscribe to all internal events

@@ -80,7 +80,7 @@ After starting the program, enter the following URL into your browser:
 
 The response will be "9". The above service can also be invoked using a POST method.  
 To do this, submit the {"a":3,"b":5} JSON (as POST body) to this URL:  
-`http://localhost:300/math/add`
+`http://localhost:3000/math/add`
 
 You can access all services, including [internal "$node" Service](internal-services.html).
 
@@ -832,11 +832,11 @@ of various reports (tables, charts) and dynamically generated images.
 [[source](https://github.com/moleculer-java/moleculer-java-web/blob/master/src/main/java/services/moleculer/web/middleware/TopLevelCache.java)]
 
 ```java
-// User default cacher of MessageBroker
+// Use default cacher of ServiceBroker
 Cacher cacher = broker.getConfig().getCacher();
 route.use(new TopLevelCache(cacher, "/blog/posts/**"));
 
-// User custom Cacher
+// Use a custom Cacher
 Cacher cacher = new MemoryCacher();
 route.use(new TopLevelCache(cacher, "/blog/posts/**"));
 ```

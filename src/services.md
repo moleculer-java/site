@@ -44,7 +44,7 @@ public class MathService extends Service {
 ```
 
 The "@Name" attribute isn't a mandatory property, if missing,
-MessageBroker will generate the `Service` name from the Class name.
+ServiceBroker will generate the `Service` name from the Class name.
 The algorithm used to create `Services` names is similar to when Spring registers Beans;
 the first letter will be lowercase, the rest will not change
 (for example, `MathService` registers as "mathService").
@@ -52,10 +52,10 @@ This rule also applies to `Action` names;
 you can specify the name with the "@Name" annotation;
 if missing, the Java field name will be the action name (eg. "add" `Action` registers as "add").
 
-To register the `MathService` in a MessageBroker, use the "createService" method:
+To register the `MathService` in a ServiceBroker, use the "createService" method:
 
 ```java{2}
-MessageBroker broker = MessageBroker.builder().build();
+ServiceBroker broker = ServiceBroker.builder().build();
 broker.createService(new MathService());
 broker.start();
 ```
@@ -114,7 +114,7 @@ public class PaymentService extends Service {
 
     @Subscribe("order.created")
     Listener orderCreated = ctx -> {
-        logger.info("Received data:", ctx.params);
+        logger.info("Received data: {}", ctx.params);
     };
 }
 ```

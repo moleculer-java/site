@@ -1,6 +1,13 @@
 ## Moleculer logging basics
 
 Moleculer uses [SLF4J](https://www.slf4j.org) for logging.
+
+> **For Node.js developers:** SLF4J is a logging *facade*, not a logging implementation. Your code
+> calls the SLF4J API, and at startup you pick one *binding* — the backend that actually writes the
+> logs (e.g. `slf4j-jdk14` routes them to the built-in JDK logger). This indirection is what lets
+> `broker.logger` work on top of whatever logging your application already uses: you wire the binding
+> once (see [Dependencies](#dependencies)) and otherwise never think about it.
+
 Each
 [Service](services.html#about-moleculer-services),
 [Middleware](middlewares.html#about-middlewares) and 
@@ -21,7 +28,7 @@ public class Math extends Service {
     Action add = ctx -> {
 
         // Log request - the "logger" instance was made by superclass
-        logger.info("Request received: " + ctx);
+        logger.info("Request received: {}", ctx);
 
         // Calculate response
         int a = ctx.params.get("a", 0);
@@ -31,6 +38,20 @@ public class Math extends Service {
     };
 }
 ```
+
+::: warning Use `{}` placeholders — not commas or string concatenation
+SLF4J substitutes arguments into `{}` placeholders in the message; it is **not** the JavaScript
+`console.log("Payload:", value)` style. If you pass a value as a second argument **without** a
+matching `{}`, the value is silently dropped:
+
+```java
+logger.info("Payload:", ctx.params);     // WRONG — the second argument is ignored
+logger.info("Payload: {}", ctx.params);  // correct — "{}" is replaced by the value
+```
+
+Using `{}` (instead of `"..." + value`) also defers building the message text until the log level
+is actually enabled.
+:::
 
 ## Dependencies
 

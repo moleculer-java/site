@@ -113,8 +113,8 @@ ServiceBroker broker = ServiceBroker.builder().invoker(invoker).build();
 | Name | Type | Default | Description |
 | ---- | ---- | ------- | ----------- |
 | windowLength | long | 5000 | Length of time-window in milliseconds |
-| maxErrors | Number | 3 | Maximum number of errors in time-window |
-| lockTimeout | Number | 10000 | Number of milliseconds to switch from open to half-open state |
+| maxErrors | int | 3 | Maximum number of errors in time-window |
+| lockTimeout | long | 10000 | Number of milliseconds to switch from open to half-open state |
 | ignoredTypes | Throwable[] | null | Ignorable Error/Exception types |
 | maxCallLevel | int | 100 | Max call level to avoid circular calls |
 | writeErrorsToLog | boolean | true | Write errors to log file |
