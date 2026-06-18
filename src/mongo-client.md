@@ -140,6 +140,10 @@ public static void main(String[] args) throws Exception {
 
 ## Usage with Spring Framework
 
+> The general broker-under-Spring setup (the `ServiceBroker` bean, `SpringRegistrator` and
+> component-scan) is on the [Running under Spring](spring.html) page. The MongoDB client adds the two
+> Spring-specific pieces below: a connection-pool bean and a `SpringMongoDAO` base class.
+
 When using the Spring Framework, you can create the MongoDB Connection Pool as Spring Bean:
 
 ```xml

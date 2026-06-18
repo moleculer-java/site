@@ -39,51 +39,12 @@ broker.repl();
 
 ## Usage with Spring Framework
 
-```xml{42}
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-       http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+Register the REPL as a Spring bean alongside the broker. The broker/registrator setup is the same for
+every module and lives on the [Running under Spring](spring.html) page; the REPL-specific bean is:
 
-    <!-- ENABLE ANNOTATION PROCESSING -->
-
-    <context:annotation-config />
-
-    <!-- PACKAGE OF THE MOLECULER SERVICES -->
-    
-    <context:component-scan base-package="my.services" />
-
-    <!-- SPRING REGISTRATOR FOR MOLECULER SERVICES -->
-
-    <bean id="registrator"
-          class="services.moleculer.config.SpringRegistrator"
-          depends-on="broker" />
-
-    <!-- SERVICE BROKER INSTANCE -->
-
-    <bean id="broker"
-          class="services.moleculer.ServiceBroker"
-          init-method="start"
-          destroy-method="stop">
-        <constructor-arg ref="brokerConfig" />
-    </bean>
-
-    <!-- SERVICE BROKER SETTINGS -->
-
-    <bean id="brokerConfig"
-          class="services.moleculer.config.ServiceBrokerConfig">
-        <property name="nodeID" value="node-1" />
-    </bean>
-
-    <!-- LOCAL DEVELOPER CONSOLE -->
-
-    <bean id="$repl" class="services.moleculer.repl.LocalRepl" />
-
-</beans>
+```xml
+<!-- Local developer console -->
+<bean id="$repl" class="services.moleculer.repl.LocalRepl" />
 ```
 
 ## Screenshot

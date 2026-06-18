@@ -1,25 +1,3 @@
-## Asynchronous programming concepts
-
-There are basically two kinds of processing; synchronous and asynchronous.
-Synchronous processing blocks the current Thread until processing is complete.
-Asynchronous processing doesn't block the current Thread,
-instead of waiting, Thread will work on other tasks in the mean time.
-Asynchronous applications are more difficult to design,
-but they can handle thousands of parallel requests,
-while synchronous applications are limited by the maximum number of Threads that can be run.
-There are many different forms and implementations of asynchronous processing in Java, such as:
-
-- [Quasar](https://github.com/puniverse/quasar): Quasar uses non-blocking [Lightweight Threads](https://docs.paralleluniverse.co/quasar/) called "Fibers"
-- [Reactor](https://projectreactor.io/): Reactor uses [Reactive Streams](https://github.com/reactive-streams/reactive-streams-jvm) for building reactive applications
-- [Vert.x](https://vertx.io/): The core Vert.x components use [Callbacks](https://en.wikipedia.org/wiki/Callback_(computer_programming))
-and there are modules for [RxJava](https://github.com/ReactiveX/RxJava) and Quasar
-
-To summarize the essence of "Moleculer for Java" in a similar way, we could describe this:
-
-- [Moleculer](https://moleculer-java.github.io/moleculer-java/): Moleculer uses Promises
-and manages sequential flow controls through "*then().then().then()*"
-[chaining](concepts.html#non-blocking-json-processing) of Promises
-
 ## JavaScript and Java parallels
 
 Java and Node.js-based Moleculer have the **same internal architecture** as possible for these two languages.
@@ -255,3 +233,22 @@ otherwise. See [Performance tips](performance-tips.html#collect-partial-results)
 [Read more about Promises](performance-tips.html#use-non-blocking-apis)
 or continue to the
 [next](broker.html#introduction-to-service-broker) chapter.
+
+## Background: asynchronous models on the JVM
+
+> Coming from Node.js, asynchronous programming is already second nature — you can skip this section.
+> It is here for Java developers comparing Moleculer to the other JVM async toolkits.
+
+There are basically two kinds of processing: synchronous and asynchronous. Synchronous processing
+blocks the current `Thread` until it completes; asynchronous processing does not — the `Thread` works
+on other tasks in the meantime. Asynchronous applications are harder to design, but they can handle
+thousands of parallel requests, while synchronous ones are limited by the number of `Threads`. There
+are many asynchronous toolkits on the JVM, for example:
+
+- [Quasar](https://github.com/puniverse/quasar): non-blocking [Lightweight Threads](https://docs.paralleluniverse.co/quasar/) ("Fibers")
+- [Reactor](https://projectreactor.io/): [Reactive Streams](https://github.com/reactive-streams/reactive-streams-jvm) for reactive applications
+- [Vert.x](https://vertx.io/): [Callbacks](https://en.wikipedia.org/wiki/Callback_(computer_programming)) at the core, with [RxJava](https://github.com/ReactiveX/RxJava) and Quasar modules
+
+Moleculer's place among them: it uses **Promises** and sequences flow control through
+`then().then().then()` [chaining](concepts.html#non-blocking-json-processing) — the model the rest of
+this page builds on.

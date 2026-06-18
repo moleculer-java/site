@@ -464,6 +464,13 @@ http://localhost:3000/dynamic.txt
 This was set by the "@HttpAlias" Annotation.
 The same could be done by adding a similar Alias to `Route`.
 
+::: tip `@HttpAlias` vs. `route.addAlias(...)`
+Both map a URL to an action. Use **`@HttpAlias`** (on the action field) when the route belongs *with*
+the action — it travels with the service class and needs no gateway wiring. Use
+**`route.addAlias(...)`** when you configure routing centrally on the gateway: one place to see every
+route, to attach per-route middlewares, or to use the `"REST"` resource shorthand.
+:::
+
 ```java
 @HttpAlias(method = "GET", path = "/dynamic.txt")
 Action img = ctx -> {
@@ -588,6 +595,43 @@ authenticator.setProvider((broker, username, password) -> {
 });
 route.use(authenticator);
 ```
+
+### Token / JWT authentication
+
+There is no built-in JWT middleware, but token auth is a short custom
+[`HttpMiddleware`](#http-middlewares) — the same shape as `BasicAuthenticator`, except it checks a
+bearer token instead of a username/password. Read the `Authorization` header, verify the token, and
+either terminate with `401` or call `next.service(...)` to let the request continue:
+
+```java
+public class JwtAuthenticator extends HttpMiddleware {
+
+    public RequestProcessor install(RequestProcessor next, Tree config) {
+        return new AbstractRequestProcessor(next) {
+            public void service(WebRequest req, WebResponse rsp) throws Exception {
+
+                String auth = req.getHeader("Authorization"); // "Bearer <token>"
+                if (auth == null || !auth.startsWith("Bearer ")
+                        || !isValidToken(auth.substring(7))) {
+                    rsp.setStatus(401);                       // reject -> stop the chain
+                    rsp.end();
+                    return;
+                }
+                next.service(req, rsp);                       // token OK -> continue
+            }
+        };
+    }
+
+    // Verify and decode the token with your preferred JWT library (e.g. jjwt, java-jwt):
+    private boolean isValidToken(String token) {
+        // ...
+        return true;
+    }
+}
+```
+
+Install it like any other middleware: `route.use(new JwtAuthenticator())`. To pass decoded claims on
+to your actions, write them into the request meta before calling `next.service(...)`.
 
 ### CorsHeaders Middleware
 

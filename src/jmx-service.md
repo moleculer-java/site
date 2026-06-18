@@ -41,44 +41,12 @@ ServiceBroker().builder()
 
 ## Usage with Spring Framework
 
+Register the JMX service as a Spring bean alongside the broker. The common broker / registrator setup
+is on the [Running under Spring](spring.html) page; the JMX-specific bean is:
+
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-	   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-	   http://www.springframework.org/schema/context
-	   http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-
-	<!-- ENABLE ANNOTATION PROCESSING -->
-
-	<context:annotation-config />
-
-	<!-- INSTALL USER-DEFINED MOLECULER SERVICES -->
-	
-	<context:component-scan base-package="my.services" />
-
-	<!-- INSTALL JMX SERVICE -->
-
-	<bean id="jmx" class="services.moleculer.jmx.JmxService" />
-
-	<!-- SPRING REGISTRATOR FOR MOLECULER SERVICES -->
-
-	<bean id="registrator" class="services.moleculer.config.SpringRegistrator" depends-on="broker" />
-
-	<!-- SERVICE BROKER INSTANCE -->
-
-	<bean id="broker" class="services.moleculer.ServiceBroker" init-method="start" destroy-method="stop">
-		<constructor-arg ref="brokerConfig" />
-	</bean>
-
-	<!-- SERVICE BROKER SETTINGS -->
-
-	<bean id="brokerConfig" class="services.moleculer.config.ServiceBrokerConfig">
-		<property name="nodeID" value="node-1" />
-	</bean>
-
-</beans>
+<!-- Install JMX service -->
+<bean id="jmx" class="services.moleculer.jmx.JmxService" />
 ```
 
 ## JMX Commands

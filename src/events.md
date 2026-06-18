@@ -4,6 +4,8 @@ Molculer `ServiceBroker` has a built-in event bus for sending events to local an
 Events can be used to create event-driven, runtime scalable applications from services
 deployed on different operating systems and implemented in different languages.
 
+> An event's payload (`ctx.params`) is a [`Tree`](tree.html) — Java's stand-in for a JavaScript object.
+
 Events can be grouped; events can be sent to
 - to all `Listeners` (unconditional "broadcast")
 - to a group of `Listeners` ("broadcast" with "groups" parameter)

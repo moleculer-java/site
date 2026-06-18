@@ -1,3 +1,11 @@
+::: warning For Node.js developers: this is **not** `moleculer-runner`
+Despite the name, the Java **Runner** is *not* the Node.js `moleculer-runner`. It does **not** load
+services from a folder by configuration and has **no hot reload**. It is a small launcher that
+starts / stops / installs a **Spring** Moleculer application reliably (UDP-triggered shutdown, running
+as a Windows service). If you only want to add a Java service to a Node.js system you do not need it —
+see [A minimal Java service](minimal-service.html); register services with `broker.createService(...)`.
+:::
+
 ## Types of Moleculer Runners
 
 Moleculer Runner is a helper object that helps you start and stop

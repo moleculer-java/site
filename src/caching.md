@@ -13,6 +13,8 @@ the delete operations on multiple nodes.
 Distributed caches store data on one (or more) central cache server(s).
 Distributed caches are easier to use, but they are a bit slower due to network traffic.
 
+> Cached values and `ctx.params` are [`Tree`](tree.html) objects — Java's stand-in for a JavaScript object.
+
 **Cached action example**
 
 ```java{5}

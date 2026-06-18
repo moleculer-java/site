@@ -261,6 +261,12 @@ ServiceBroker broker = ServiceBroker.builder()
 ### TCP Transporter
 
 ![](https://img.shields.io/badge/Node.js-Compatible-brightgreen.svg)  
+
+> **Just choosing a transporter?** TCP needs no external broker, but it is the most advanced option —
+> the rest of this section dives into Gossip discovery, sequence numbers and tuning. If you only need a
+> working cluster, a centralized transporter above (NATS, Redis…) is simpler; come back here when you
+> specifically want a broker-less, peer-to-peer setup.
+
 TCP `Transporter` uses fault tolerant and peer-to-peer
 [Gossip protocol](https://en.wikipedia.org/wiki/Gossip_protocol)
 to discover location and service information about the other nodes

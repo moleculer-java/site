@@ -29,39 +29,60 @@ common platform for modules written in different languages.
 
 Moleculer Java requires Java 21.
 
-## REST service example
+## A first service
 
-Here's how to create a REST service using Moleculer:
+A complete Moleculer node is a broker, a service, and a call — no web server and no Spring:
 
 ```java
+import io.datatree.Tree;
 import services.moleculer.ServiceBroker;
-import services.moleculer.service.Action;
+import services.moleculer.service.Name;
 import services.moleculer.service.Service;
-import services.moleculer.web.ApiGateway;
-import services.moleculer.web.netty.NettyServer;
+import services.moleculer.service.Action;
 
 public class Sample {
-  public static void main(String[] args) throws Exception {
-    new ServiceBroker()
-      .createService(new NettyServer(8080))
-      .createService(new ApiGateway("**"))
-      .createService(new Service("math") {
-        Action add = ctx -> {
-          return ctx.params.get("a", 0) +
-                 ctx.params.get("b", 0);
-          };
-        }).start();
-  }
+    public static void main(String[] args) throws Exception {
+
+        // Start a broker and register one service
+        ServiceBroker broker = new ServiceBroker();
+        broker.createService(new MathService());
+        broker.start();
+
+        // Call the "math.add" action and read the result
+        Tree rsp = broker.call("math.add", "a", 3, "b", 6).waitFor();
+        System.out.println("3 + 6 = " + rsp.asInteger()); // -> 9
+
+        broker.stop();
+    }
+}
+
+@Name("math")
+class MathService extends Service {
+
+    public Action add = ctx ->
+            ctx.params.get("a", 0) + ctx.params.get("b", 0);
 }
 ```
 
-After starting the program, enter the following URL into your browser:  
-`http://localhost:8080/math/add?a=3&b=6`
+The call resolves to a [`Tree`](tree.html) (Moleculer's JSON object); `.waitFor()` blocks for the
+result and `.asInteger()` reads the number out. To make the same call from an existing Node.js system
+instead, see [A minimal Java service for Node.js developers](minimal-service.html).
 
-The response will be "9" (because 3 and 6 are the values of the "a" and "b" parameters).
-The above service can also be invoked using a POST method.
-To do this, submit the {"a":3,"b":5} JSON (as POST body) to this URL:  
-`http://localhost:8080/math/add`
+### Exposing it over HTTP
+
+To reach the action from a browser or REST client, put it behind the Web API Gateway — a
+`NettyServer` (the HTTP server) plus an `ApiGateway` (the router that maps URLs to actions):
+
+```java
+new ServiceBroker()
+    .createService(new NettyServer())    // HTTP server on the default port 3000
+    .createService(new ApiGateway("**")) // publish every action
+    .createService(new MathService())
+    .start();
+```
+
+Now `http://localhost:3000/math/add?a=3&b=6` returns `9` (and the same action also accepts a POST with
+a `{"a":3,"b":6}` JSON body). See [Web API Gateway](moleculer-web.html) for routes, aliases and more.
 
 ## Dependencies of the example
 

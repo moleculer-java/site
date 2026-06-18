@@ -52,6 +52,20 @@ cluster** — a Node.js node could never reach it. `Action` fields are instance 
 remember; every example below follows it.
 :::
 
+::: tip Canonical form — and the anonymous alternative
+The `@Name`-annotated class above is the **canonical** service form used throughout this
+documentation. For a short, inline example you may also see the equivalent **anonymous** form (an
+inline subclass), which the broker registers the same way:
+
+```java
+broker.createService(new Service("math") {
+    public Action add = ctx -> ctx.params.get("a", 0) + ctx.params.get("b", 0);
+});
+```
+
+Prefer the named class for anything reusable; the `public` / non-`static` action rule applies to both.
+:::
+
 The "@Name" attribute isn't a mandatory property, if missing,
 ServiceBroker will generate the `Service` name from the Class name.
 The algorithm used to create `Services` names is similar to when Spring registers Beans;
@@ -116,6 +130,31 @@ broker.call("v2.math.add", "a", 5, "b", 3);
 ::: tip REST call
 Via [WEB API Gateway](moleculer-web.html#about-api-gateway), make a request to GET /v2/math/add.
 :::
+
+## Service configuration (the `settings` equivalent)
+
+Node.js services keep configuration in a `settings` object (`this.settings`). Java has no `settings`
+block — a service is a normal class, so its configuration is just **fields**, read directly in your
+actions and lifecycle handlers:
+
+```java
+@Name("mail")
+public class MailService extends Service {
+
+    // The "settings" of this service are plain fields
+    private final String smtpHost = "localhost";
+    private final int    smtpPort = 25;
+
+    public Action send = ctx -> {
+        // ... use smtpHost / smtpPort ...
+        return null;
+    };
+}
+```
+
+For values that come from the environment or a config file, assign them in the constructor or in
+[`started(broker)`](lifecycle.html#service-lifecycle) (e.g. from `broker.getConfig()`, or — under
+Spring — via `@Value` / injected beans).
 
 ## Events
 
