@@ -237,18 +237,12 @@ or continue to the
 ## Background: asynchronous models on the JVM
 
 > Coming from Node.js, asynchronous programming is already second nature — you can skip this section.
-> It is here for Java developers comparing Moleculer to the other JVM async toolkits.
+> It is here only to place Moleculer among the JVM's other async styles.
 
-There are basically two kinds of processing: synchronous and asynchronous. Synchronous processing
-blocks the current `Thread` until it completes; asynchronous processing does not — the `Thread` works
-on other tasks in the meantime. Asynchronous applications are harder to design, but they can handle
-thousands of parallel requests, while synchronous ones are limited by the number of `Threads`. There
-are many asynchronous toolkits on the JVM, for example:
+Synchronous code blocks the current `Thread` until it returns; asynchronous code does not, so a few
+threads can serve thousands of concurrent requests. The JVM offers several async styles — reactive
+streams (Reactor, RxJava), event-loop callbacks (Vert.x), and, since **Java 21, virtual threads**
+(Project Loom) built into the JDK itself, which make ordinary blocking-style code cheap to scale.
 
-- [Quasar](https://github.com/puniverse/quasar): non-blocking [Lightweight Threads](https://docs.paralleluniverse.co/quasar/) ("Fibers")
-- [Reactor](https://projectreactor.io/): [Reactive Streams](https://github.com/reactive-streams/reactive-streams-jvm) for reactive applications
-- [Vert.x](https://vertx.io/): [Callbacks](https://en.wikipedia.org/wiki/Callback_(computer_programming)) at the core, with [RxJava](https://github.com/ReactiveX/RxJava) and Quasar modules
-
-Moleculer's place among them: it uses **Promises** and sequences flow control through
-`then().then().then()` [chaining](concepts.html#non-blocking-json-processing) — the model the rest of
-this page builds on.
+Moleculer takes the **Promise** route: it sequences flow control through `then().then().then()`
+[chaining](concepts.html#non-blocking-json-processing) — the model the rest of this page builds on.
