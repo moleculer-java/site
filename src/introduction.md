@@ -89,16 +89,6 @@ a `{"a":3,"b":6}` JSON body). See [Web API Gateway](moleculer-web.html) for rout
 The Moleculer packages can be downloaded from the central
 [Maven repository](https://mvnrepository.com/artifact/com.github.berkesa/moleculer-java).
 
-**Gradle**
-
-```gradle
-dependencies {
-    implementation group: 'org.slf4j',          name: 'slf4j-jdk14',        version: '2.0.18'
-    implementation group: 'com.github.berkesa', name: 'moleculer-java',     version: '2.0.0'
-    implementation group: 'com.github.berkesa', name: 'moleculer-java-web', version: '2.0.0' 
-}
-```
-
 **Maven**
 
 ```xml
@@ -128,12 +118,12 @@ demonstrating the basic capabilities of a Moleculer-based web application.
 The project can be imported into the Eclipse IDE or IntelliJ IDEA.
 The brief examples illustrate the following:
 
-- Integration of Moleculer API into the [Spring Boot Framework](broker.html#create-a-service-broker)
+- Integration of Moleculer API into the [Spring Boot Framework](spring.html)
 - Configuring HTTP [Routes](moleculer-web.html#routes) and [Middlewares](moleculer-web.html#http-middlewares)
 - Creating non-blocking Moleculer [Services](services.html#about-moleculer-services)
 - Publishing and invoking Moleculer `Services` as [REST Services](moleculer-web.html#aliases)
-- Generating HTML pages in multiple languages using [Template Engines](moleculer-web.html#template-engines)
-- Using [WebSockets](moleculer-web.html#websocket-handling) (sending real-time server-side events to browsers)
+- Generating HTML pages in multiple languages using [Template Engines](web-templates.html)
+- Using [WebSockets](web-websocket.html) (sending real-time server-side events to browsers)
 - Using file upload and [download](moleculer-web.html#response-type-status-code)
 - Video streaming and server-side image generation
 - Creating a WAR from the finished project (Servlet-based runtime)

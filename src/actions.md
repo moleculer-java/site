@@ -76,12 +76,12 @@ broker.call("service.action",
             });
 ```
 
-**Available calling options**
+### Call options
 
 | Name | Type | Default | Description |
 | ------- | ----- | ------- | ------- |
-| timeout | long | null | Timeout of request in milliseconds. [Read more](fault-tolerance.html#Timeout) |
-| retryCount | int | null | Count of retry of request. If the request is timed out or any I/O error occurs, broker will try to call again. [Read more](fault-tolerance.html#Retry) |
+| timeout | long | null | Timeout of request in milliseconds. [Read more](fault-tolerance.html#call-level-retry-and-timeout) |
+| retryCount | int | null | Count of retry of request. If the request is timed out or any I/O error occurs, broker will try to call again. [Read more](fault-tolerance.html#call-level-retry-and-timeout) |
 | nodeID | String | null | Target nodeID. If set, it will make a direct call to the given node. |
 
 ### Usages

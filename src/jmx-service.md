@@ -22,14 +22,6 @@ This events can be received by any node subscribed to this event, including Node
 </dependencies>
 ```
 
-**Gradle**
-
-```gradle
-dependencies {
-	implementation group: 'com.github.berkesa', name: 'moleculer-java-jmx', version: '2.0.0' 
-}
-```
-
 ## Usage from code
 
 ```java

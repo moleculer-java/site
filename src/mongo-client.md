@@ -19,14 +19,6 @@ The API can be conveniently used with the Spring Framework (but it works without
 </dependencies>
 ```
 
-**Gradle**
-
-```gradle
-dependencies {
-	implementation group: 'com.github.berkesa', name: 'moleculer-java-mongo', version: '2.0.0' 
-}
-```
-
 ## Usage without Spring Framework
 
 The key Superclass is the "MongoDAO". All DAO objects are inherited from this Class.

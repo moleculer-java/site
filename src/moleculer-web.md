@@ -52,14 +52,6 @@ The number of servers (Moleculer nodes) can vary depending on the load.
 </dependencies>
 ```
 
-**Gradle**
-
-```gradle
-dependencies {
-    implementation group: 'com.github.berkesa', name: 'moleculer-java-web', version: '2.0.0' 
-}
-```
-
 ### Short Example
 
 The simplest way to create a REST service using Moleculer is the following:

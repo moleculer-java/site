@@ -22,14 +22,6 @@ If a connection is lost, the client automatically rebuilds the connection.
 </dependencies>
 ```
 
-**Gradle**
-
-```gradle
-dependencies {
-	implementation group: 'com.github.berkesa', name: 'moleculer-java-httpclient', version: '2.0.0' 
-}
-```
-
 ## Examples
 
 ### Blocking usage

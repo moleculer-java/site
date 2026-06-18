@@ -59,17 +59,30 @@ The APIs used by Moleculer Framework use multiple logging implementations (eg. A
 It is advisable to redirect all of them to the JDK logger as this will work with standalone (Netty-based) runtime and within Jakarta EE servers.
 To do this, add the following dependencies to the build file:
 
-```gradle
-dependencies {
-
-    implementation group: 'org.slf4j', name: 'slf4j-api',        version: '2.0.18'
-    implementation group: 'org.slf4j', name: 'slf4j-jdk14',      version: '2.0.18'
-    implementation group: 'org.slf4j', name: 'log4j-over-slf4j', version: '2.0.18'
-    implementation group: 'org.slf4j', name: 'jcl-over-slf4j',   version: '2.0.18'
-
-    // ...other dependencies...
-
-}
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.18</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-jdk14</artifactId>
+        <version>2.0.18</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>log4j-over-slf4j</artifactId>
+        <version>2.0.18</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>jcl-over-slf4j</artifactId>
+        <version>2.0.18</version>
+    </dependency>
+    <!-- ...other dependencies... -->
+</dependencies>
 ```
 
 ## Logging in standalone runtime mode

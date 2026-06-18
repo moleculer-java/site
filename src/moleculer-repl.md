@@ -18,14 +18,6 @@ It is also possible to create **custom commands**. The console can be used via s
 </dependencies>
 ```
 
-**Gradle**
-
-```gradle
-dependencies {
-    implementation group: 'com.github.berkesa', name: 'moleculer-java-repl', version: '2.0.0' 
-}
-```
-
 ## Usage from code
 
 ```java{6}
