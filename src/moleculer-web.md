@@ -75,6 +75,13 @@ new ServiceBroker()
          };
        }).start();
 ```
+> **Why both `NettyServer` and `ApiGateway`?** They are two layers. `NettyServer` is the **HTTP
+> server** — it opens the socket and speaks HTTP (default port **3000**). `ApiGateway` is the
+> **router/dispatcher** that maps incoming HTTP requests to Moleculer actions (`new ApiGateway("**")`
+> publishes every action). In Node.js the single `moleculer-web` mixin does both jobs; Java keeps them
+> separate, so you can swap the HTTP layer — e.g. deploy inside a Jakarta EE servlet container instead
+> of Netty — without touching your routing.
+
 After starting the program, enter the following URL into your browser:  
 `http://localhost:3000/math/add?a=3&b=6`
 

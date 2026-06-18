@@ -13,6 +13,16 @@ to a [Tree](https://berkesa.github.io/datatree/introduction.html) (~= JSON) obje
 - End the request-response cycle.
 - Call the next **local or remote** `Action` or `Middleware` in the stack.
 
+::: tip For Node.js developers: this is how you write "action hooks"
+Node.js has action `hooks` (`before`/`after`/`error`) *and* broker middleware. Java has **one**
+mechanism: a `Middleware` wraps an `Action`. The code you run *before* `action.handler(ctx)` is the
+`before` hook, the code *after* it is the `after` hook, and a `try/catch` around it is the `error`
+hook. A `Middleware` wraps **Actions only** — there is no built-in `emit`/`broadcast`/`localEvent`
+middleware. To run logic around an **event**, put it in the event `Listener` itself; to run logic on
+**broker start/stop**, use the service's [`started`/`stopped`](lifecycle.html#service-lifecycle)
+handlers.
+:::
+
 ```java
 public class MyMiddleware extends Middleware {
 

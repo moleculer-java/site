@@ -255,6 +255,13 @@ mol $ call math.add {"a": 5, "b": "Bob", "c": true, "d": false, "e": { "f": "hel
 
 Params will be {"a":5, "b":"Bob", "c":"--no-d", "e":{ "f":"hello" }}
 
+::: tip How `--key value` parsing works (and why `c` is `"--no-d"`)
+The REPL reads each `--key` and takes the **next token** as its value — there are no boolean or
+`--no-x` shortcuts. So in `… --c --no-d …`, `--c` swallows `--no-d` as its value (`"c":"--no-d"`)
+and there is **no `d` key at all**. To pass real booleans, write them out (`--c true --d false`) or
+use the JSON form shown above. The same parsing applies to `emit` and `dcall`.
+:::
+
 **Output**
 
 ![image](repl/call2.png)

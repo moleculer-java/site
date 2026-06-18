@@ -50,6 +50,11 @@ int sum = broker.call("mathNode.add", params).waitFor(5000).asInteger(); // -> 4
 
 ::::
 
+> **About the Java tab:** `broker.call(...)` returns a `Promise`. `.waitFor(5000)` **blocks** the
+> current thread for up to 5 s until it resolves — the blocking form of JavaScript `await`. The
+> resolved value is a `Tree`, so `.asInteger()` reads the number out of it. The non-blocking form is
+> `broker.call(...).then(rsp -> rsp.asInteger())`; see [Call Node.js from Java](call-node-from-java.html).
+
 There is no gateway, no REST hop and no schema compiler in between — the broker discovers the remote
 service and routes the call over the shared transporter.
 

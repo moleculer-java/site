@@ -7,6 +7,18 @@ In addition, Moleculer has a built-in
 A Circuit Breaker does the `Action` calls and it monitors the service health. Once it gets some issue,
 it trips and all further calls goto another node and finally restores automatically once the `Service` came back.
 
+## Fault-tolerance features (and what differs from Node.js)
+
+If you know the five fault-tolerance features from Node.js Moleculer, here is what the Java version provides:
+
+| Feature | Java | Notes |
+|---|:---:|---|
+| **Circuit Breaker** | ✓ | Described below. |
+| **Retry** | ✓ | `CallOptions.retryCount(int)` — see [Call options](actions.html#call-options). |
+| **Timeout** | ✓ | `CallOptions.timeout(long)`, in milliseconds. |
+| **Bulkhead** (concurrency limit) | ✗ | **Not implemented.** Limit concurrency yourself — e.g. a bounded `Executor`/`Semaphore` or a queue inside the service. |
+| **Fallback** (`fallbackResponse`) | ✗ | **Not implemented.** Handle it on the caller side: `.catchError(err -> defaultValue)` returns a fallback when the call fails. |
+
 ## Default Service Invoker
 
 This is the default call logic when you create a `ServiceBroker` instance.

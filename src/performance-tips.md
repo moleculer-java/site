@@ -116,6 +116,10 @@ This chapter outlines some important Moleculer-specific coding suggestions that 
 
 ### Collect partial results
 
+> This is a **correctness** rule of the Promise programming model, not just a performance tip — it is
+> introduced in [Moleculer concepts](concepts.html#non-blocking-json-processing). The patterns below
+> show how to carry **several** variables through a long waterfall.
+
 The blocks of waterfall model are executed by separate `Threads`.
 The individual "then" blocks do not reach each other's variables.
 Therefore, sharing local variables between blocks would be problematic.

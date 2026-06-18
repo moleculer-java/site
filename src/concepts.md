@@ -188,6 +188,13 @@ An `io.datatree.Promise` is an object that may produce a simple value (or a `Tre
 either a resolved value, or a reason that it's not resolved (e.g., a network error occurred).
 `Promise` users can attach callbacks to handle the fulfilled `Tree` or the reason for rejection.
 
+::: tip For Node.js developers
+This is `io.datatree.Promise`, an **ES6-style** Promise — *not* `java.util.concurrent.Future` /
+`CompletableFuture` (even though it is built on top of one). You chain with `.then(...)` exactly like
+in JavaScript, and the equivalent of JavaScript's `.catch()` is **`.catchError(...)`** (`catch` is a
+reserved keyword in Java). A resolved value is always a `Tree`.
+:::
+
 The main difference between Promise-based operation of other systems and Moleculer
 is that the Moleculer `Promise` object works with "raw" JSON objects.
 The value of a Moleculer `Promise`, which you get after the asynchronous processing,
@@ -223,6 +230,27 @@ Action anAction = ctx -> {
     });
 }
 ```
+
+::: warning Each `.then(...)` block is a separate scope
+Unlike a JavaScript closure, a Java lambda can only capture *effectively-final* variables, and
+consecutive `.then(...)` blocks may even run on different threads — so you **cannot** declare a local
+variable in one block and reassign it in the next. To carry state across the chain, write into a
+`final` **container** created before the chain (a `Tree`, an `AtomicReference`, or a one-element array):
+
+```java
+final Tree state = new Tree();                  // created once, before the chain
+return broker.call("a.first", ctx.params).then(rsp -> {
+    state.put("first", rsp.asInteger());        // write into the container — don't reassign a local
+    return broker.call("a.second", ctx.params);
+}).then(rsp -> {
+    int first = state.get("first", 0);          // ...read it back in a later block
+    return first + rsp.asInteger();
+});
+```
+
+This is a **correctness** rule, not a performance tip — your first waterfall will not compile
+otherwise. See [Performance tips](performance-tips.html#collect-partial-results) for multi-variable patterns.
+:::
 
 [Read more about Promises](performance-tips.html#use-non-blocking-apis)
 or continue to the

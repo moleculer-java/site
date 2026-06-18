@@ -61,6 +61,15 @@ public class TestService extends Service {
 }
 ```
 
+::: tip Why `started(broker)` takes a parameter — and why `super.started(broker)` is mandatory
+A Java `Service` has no ambient access to its broker (there is no module-scope `broker` like in
+Node.js); it receives the `ServiceBroker` at startup. The base `Service.started(ServiceBroker)`
+stores it into the inherited `this.broker` field — the one used by `getBroker()` and by every
+`broker.*` call in your handlers. **If you override `started` and forget `super.started(broker)`,
+`this.broker` stays `null`**, and the first `broker.getConfig()` / `broker.createStream()` /
+`broker.call(...)` throws a `NullPointerException`. The same convention applies to `super.stopped()`.
+:::
+
 To register for the above `Service` at the `Service` Broker:
 
 ```java

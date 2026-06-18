@@ -156,6 +156,13 @@ broker.call("service.action", params).then(rsp -> {
 });
 ```
 
+::: warning `java.util.Date` does not cross the wire as a date
+`new Date()` above just illustrates the API. A `java.util.Date` is not a JSON type, so it does **not**
+round-trip to a Node.js node as a `Date`. For cross-language calls, send an epoch `long`
+(`System.currentTimeMillis()`) or an ISO-8601 `String` instead — see
+[Data types & features](interop-data-types.html). (Within a single JVM, a `Date` in local meta is fine.)
+:::
+
 The remote `Service` can access the metadata block with the "ctx.params.getMeta()" function.
 Meta is merged at nested calls:
 
@@ -214,11 +221,78 @@ broker.createService(new Service("test") {
 broker.call("test.first");
 ```
 
+## Validating parameters
+
+Node.js Moleculer validates input declaratively with `fastest-validator`
+(`params: { a: "number", to: "email" }`). **Moleculer for Java has no built-in declarative
+validator** — `ctx.params` is just a [`Tree`](concepts.html#datatree-api-for-javascript-objects),
+so you validate it yourself. Two patterns cover almost everything.
+
+**1. Inline check inside the action.** Read the value, test it, and throw — the error propagates to
+the caller (locally or across the cluster):
+
+```java
+import io.datatree.Tree;
+import services.moleculer.service.Name;
+import services.moleculer.service.Service;
+import services.moleculer.service.Action;
+import services.moleculer.error.ValidationError;
+
+@Name("math")
+public class MathService extends Service {
+
+    public Action add = ctx -> {
+
+        // ctx.params.get("a") returns null when the key is absent
+        if (ctx.params.get("a") == null || ctx.params.get("b") == null) {
+
+            // ValidationError -> HTTP 422, cross-language error type "VALIDATION_ERROR"
+            throw new ValidationError("Parameters 'a' and 'b' are required", ctx.nodeID, "REQUIRED");
+        }
+
+        int a = ctx.params.get("a", 0);
+        int b = ctx.params.get("b", 0);
+        return a + b;
+    };
+}
+```
+
+**2. A reusable validation `Middleware`.** When the same rules repeat, drive them from an annotation
+and enforce them in a [`Middleware`](middlewares.html) — the same shape as the access-control
+example, so one class validates every annotated `Action`:
+
+```java
+// On the action:   @Required({"a", "b"})
+// In the middleware install(action, config) method:
+
+Tree required = config.get("required");          // the @Required values, as a Tree
+if (required == null) {
+    return null;                                 // nothing to validate -> don't wrap the Action
+}
+return ctx -> {
+    for (Tree field : required) {
+        if (ctx.params.get(field.asString()) == null) {
+            throw new ValidationError("Missing parameter: " + field.asString(),
+                                      ctx.nodeID, "REQUIRED");
+        }
+    }
+    return action.handler(ctx);                  // all good -> call the real Action
+};
+```
+
+The same applies to **event** payloads: there is no declarative validator, so validate `ctx.params`
+at the top of the [`Listener`](events.html) the same way.
+
 ## Streaming
 
 Moleculer supports streams as request "params" and as response.
 This is useful for uploading or downloading large files, or encoding/decoding the content.
 This also allows you to transfer media files between `Services`.
+
+> **What is a `PacketStream`?** It is Moleculer's chunked binary stream — the Java counterpart of a
+> Node.js stream. `broker.createStream()` (or `ctx.createStream()`) creates one; you push bytes in
+> with `sendData(...)` / `transferFrom(...)`, and they arrive at the receiver packet-by-packet via
+> `onPacket(...)`. A stream travels **as** the action's `params` (you cannot mix it with other params).
 
 ### Examples
 
@@ -258,6 +332,11 @@ public class ReceiverService extends Service {
 
 Please note, the "params" should be a stream, you cannot add other variables to the "params".
 Use the "meta" property to transfer additional data.
+
+> **`CheckedTree` vs `new Tree()`:** a plain `Tree` holds JSON-like data, but a request whose body
+> *is* a stream needs a `Tree` whose top-level value is that non-JSON object. `new CheckedTree(stream)`
+> wraps the `PacketStream` as the `params` while still giving you a `getMeta()` block for side-channel
+> data such as the filename.
 
 ```java
 // Create stream

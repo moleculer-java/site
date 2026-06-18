@@ -29,6 +29,12 @@ broker.call("test.action", "a", 3, "b", 4).then(rsp -> {
 });
 ```
 
+> **The `call("svc.action", "a", 3, "b", 4)` form** passes parameters as **key–value varargs** — it is
+> shorthand for the params object `{"a": 3, "b": 4}`. (Equivalently, pass a `Tree`:
+> `broker.call("test.action", new Tree().put("a", 3).put("b", 4))`.) A Node.js developer expecting
+> `call(name, paramsObject)` gets that too — the varargs are just a convenience. See
+> [Actions](actions.html#calling-actions) for the full calling syntax.
+
 **Create Broker with custom settings**
 
 There are two ways to create a `ServiceBroker`, using either

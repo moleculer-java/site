@@ -10,6 +10,13 @@ cfg.setInternalServices(false); // Disable Internal Services
 ServiceBroker broker = new ServiceBroker(cfg);
 ```
 
+::: tip For Node.js developers
+The Java broker exposes exactly these internal `Actions`: `$node.list`, `$node.services`,
+`$node.actions`, `$node.events` and `$node.health` (all described below). There is **no
+`$node.metrics` and no `$node.options`** internal service as in Node.js — registry and health data
+are available through the actions above.
+:::
+
 ## List of nodes
 
 The "$node.list" `Action` lists all known nodes (including local node).

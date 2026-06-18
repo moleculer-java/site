@@ -106,6 +106,14 @@ System.out.println("mathNode.add => " + sum); // -> 5
 
 ::::
 
+::: tip Why two numbers on `waitForServices(10000, "mathNode").waitFor(12000)`?
+`waitForServices(10000, …)` returns a `Promise` and tells **discovery** to give up after 10 000 ms.
+`.waitFor(12000)` then **blocks the current thread** for up to 12 000 ms while that `Promise`
+resolves (the blocking form of `await`) — so keep the blocking timeout ≥ the discovery timeout. In
+Node.js this is simply `await broker.waitForServices(["mathNode"], 10000)`; Java just separates the
+"how long to search" and "how long to block" parts.
+:::
+
 That is the whole loop: a Node.js process called a Java action and a Java process called a Node.js
 action, over one cluster, with no REST layer or shared database between them.
 

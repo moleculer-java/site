@@ -30,18 +30,27 @@ A `Service` schema of adding and subtracting two numbers (the example defines tw
 @Name("math")
 public class MathService extends Service {
 
-    Action add = ctx -> {
+    public Action add = ctx -> {
         return ctx.params.get("a", 0) + 
                ctx.params.get("b", 0);
     };
     
-    Action sub = ctx -> {
+    public Action sub = ctx -> {
         return ctx.params.get("a", 0) -
                ctx.params.get("b", 0);
     };
     
 }
 ```
+
+::: warning Action fields must be `public` (and never `static`)
+The `ServiceBroker` discovers `Actions` by reflecting over the `Action` fields of your `Service`.
+Declare them **`public`**: a package-private or private `Action` is registered with `protected`
+visibility, which means it is callable **only on the local node** and is **not published to the
+cluster** — a Node.js node could never reach it. `Action` fields are instance fields, never
+`static` (a `static` lambda cannot see the service's `this`/`broker`). This is the one rule to
+remember; every example below follows it.
+:::
 
 The "@Name" attribute isn't a mandatory property, if missing,
 ServiceBroker will generate the `Service` name from the Class name.
@@ -59,6 +68,13 @@ ServiceBroker broker = ServiceBroker.builder().build();
 broker.createService(new MathService());
 broker.start();
 ```
+
+::: tip No folder auto-loading or hot reload
+You register services explicitly with `broker.createService(...)` (or as Spring beans). Moleculer
+for Java has **no `loadServices("./services")` folder scanner and no `--hot` hot-reload** that some
+Node.js setups rely on. Add each service in code (or let Spring inject them); to pick up changes,
+restart the broker. See also the [Runner](runner.html) page.
+:::
 
 To call the `Service`, use the "call" method:
 
