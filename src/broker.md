@@ -63,121 +63,12 @@ ServiceBroker broker = ServiceBroker.builder()
                                     .build();
 ```
 
-**Create Broker using Spring XML config**
+**Create the broker with Spring (optional)**
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:context="http://www.springframework.org/schema/context"
-    xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-       http://www.springframework.org/schema/context
-       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-
-    <!-- ENABLE ANNOTATION PROCESSING -->
-
-    <context:annotation-config />
-
-    <!-- PACKAGE OF THE MOLECULER SERVICES -->
-    
-    <context:component-scan base-package="my.services" />
-
-    <!-- SPRING REGISTRATOR FOR MOLECULER SERVICES -->
-
-    <bean id="registrator"
-          class="services.moleculer.config.SpringRegistrator"
-          depends-on="broker" />
-
-    <!-- SERVICE BROKER INSTANCE -->
-
-    <bean id="broker" class="services.moleculer.ServiceBroker"
-        init-method="start"
-        destroy-method="stop">
-        <constructor-arg ref="brokerConfig" />
-    </bean>
-
-    <!-- SERVICE BROKER SETTINGS -->
-
-    <bean id="brokerConfig" class="services.moleculer.config.ServiceBrokerConfig">
-        <property name="nodeID" value="node-1" />
-        <property name="transporter" ref="transporter" />
-    </bean>
-
-    <!-- CONFIGURE TRANSPORTER -->
-
-    <bean id="transporter" class="services.moleculer.transporter.TcpTransporter" />
-
-</beans>
-```
-
-With this setting, Spring will dynamically load Moleculer `Services` from the "my.services" package.
-In a Spring environment, Moleculer `Services` are also Spring Beans,
-the `Services` must be marked with a "@Controller" annotation.
-Because of the annotation, Spring creates these `Services`,
-and at the end of the creation process,
-`SpringRegistrator` will register the `Service` instances into the `ServiceBroker`.
-A simple, Spring-compatible Moleculer `Service` looks like this:
-
-```java{7}
-package my.services;
-
-import org.springframework.stereotype.Controller;
-import services.moleculer.service.*;
-
-@Name("service1")
-@Controller
-public class TestService extends Service {
-
-    @Name("action1")
-    public Action testAction = ctx -> {
-        return ctx.params.get("a").asInteger()
-             + ctx.params.get("b").asInteger();
-    };
-    
-}
-```
-
-There is a extended
-[xml configuration sample](https://github.com/moleculer-java/moleculer-java/tree/master/cfg)
-on the project's GitHub page.
-The example shows how to create internal Moleculer Modules using the XML configuration.
-
-**Create broker with Spring Boot**
-
-The following example code shows Spring Boot-based initialization without XML configuration:
-
-```java
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.context.annotation.*;
-import services.moleculer.config.*;
-import services.moleculer.*;
-
-@SpringBootApplication
-@ComponentScan("my.services")
-public class MoleculerApplication {
-
-    // --- CREATE AND CONFIGURE SERVICE BROKER ---
-
-    @Bean(initMethod = "start", destroyMethod = "stop")
-    public ServiceBroker getServiceBroker() {
-        ServiceBrokerConfig config = new ServiceBrokerConfig();
-        config.setNodeID("node1");
-        config.setTransporter(...);
-        config.setStrategyFactory(...);
-        config.setCacher(...);
-        return new ServiceBroker(config);
-    }
-
-    // --- SPRING REGISTRATOR FOR MOLECULER SERVICES ---
-
-    @Bean
-    public SpringRegistrator getSpringRegistrator() {
-        return new SpringRegistrator();
-    }
-
-}
-```
+If you use the Spring Framework, the broker and your services become Spring beans — Spring creates
+them and a `SpringRegistrator` hands them to the broker. **The service class is exactly the same as
+above**; only the broker's creation and startup move into Spring. The XML and Spring Boot setups live
+on their own page: **[Running under Spring](spring.html)**.
 
 ::: tip Moleculer runner
 The Moleculer Runner is a utility API that helps the application run as a background service.

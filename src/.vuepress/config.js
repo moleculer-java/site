@@ -83,8 +83,11 @@ module.exports = {
 				title: 'Getting started',
 				sidebarDepth: 2,
 				children: [
-					['introduction', 'Introduction'],
-					['concepts',     'Moleculer concepts']
+					['introduction',    'Introduction'],
+					['feature-map',     'Node.js → Java feature map'],
+					['minimal-service', 'Your first Java service'],
+					['tree',            'The Tree type'],
+					['concepts',        'Moleculer concepts']
 				]
 			},
 			{
@@ -120,10 +123,19 @@ module.exports = {
 				sidebarDepth: 1,
 				children: [
 					['moleculer-web',  'Web API Gateway'],
+					['web-templates',  'Web — template engines'],
+					['web-websocket',  'Web — WebSocket'],
 					['moleculer-repl', 'Moleculer REPL'],
 					['mongo-client',   'MongoDB client'],
 					['http-client',    'HTTP client'],
 					['jmx-service',    'JMX Service']
+				]
+			},
+			{
+				title: 'Running under Spring (optional)',
+				sidebarDepth: 1,
+				children: [
+					['spring', 'Running under Spring']
 				]
 			}
 		]
