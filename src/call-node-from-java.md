@@ -102,6 +102,13 @@ health.process.memory.heapUsed;
 
 ::::
 
+> **Two timeouts, two jobs.** The call above passes *two* 5000s, and they are not redundant.
+> `CallOptions.timeout(5000)` is the **request deadline** — how long the broker waits for the remote
+> node to answer before rejecting the `Promise` with a timeout error. `.waitFor(5000)` is a **local**
+> guard — how long the *current thread* blocks for that `Promise` to settle. They are independent: the
+> call timeout governs the distributed call, `waitFor` only governs your blocking wait (handy in tests
+> and `main()`). Set `waitFor` ≥ the call timeout so the thread doesn't give up before the call does.
+
 `$node.list` and `$node.services` work the same way from Java — iterate the returned `Tree` to find the
 remote node and the services it advertises.
 

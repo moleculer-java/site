@@ -76,6 +76,14 @@ broker.call("service.action",
             });
 ```
 
+::: tip `ctx.call()` vs `broker.call()`
+They take the same arguments, but `ctx.call()` (from **inside** an action or listener) makes a
+**nested** call that propagates the call chain — `requestID`, `parentID`, `level` and `meta` flow
+automatically, so timeouts, the max-call-level guard and distributed correlation all work.
+`broker.call()` starts a **fresh, top-level** call with no parent. Use `ctx.call()` whenever you are
+already handling a request; use `broker.call()` from outside one (startup code, schedulers, tests).
+:::
+
 ### Call options
 
 | Name | Type | Default | Description |

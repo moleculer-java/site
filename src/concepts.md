@@ -233,16 +233,3 @@ otherwise. See [Performance tips](performance-tips.html#collect-partial-results)
 [Read more about Promises](performance-tips.html#use-non-blocking-apis)
 or continue to the
 [next](broker.html#introduction-to-service-broker) chapter.
-
-## Background: asynchronous models on the JVM
-
-> Coming from Node.js, asynchronous programming is already second nature — you can skip this section.
-> It is here only to place Moleculer among the JVM's other async styles.
-
-Synchronous code blocks the current `Thread` until it returns; asynchronous code does not, so a few
-threads can serve thousands of concurrent requests. The JVM offers several async styles — reactive
-streams (Reactor, RxJava), event-loop callbacks (Vert.x), and, since **Java 21, virtual threads**
-(Project Loom) built into the JDK itself, which make ordinary blocking-style code cheap to scale.
-
-Moleculer takes the **Promise** route: it sequences flow control through `then().then().then()`
-[chaining](concepts.html#non-blocking-json-processing) — the model the rest of this page builds on.

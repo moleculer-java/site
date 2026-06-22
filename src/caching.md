@@ -232,7 +232,7 @@ Example to clean the cache inside actions:
 cacher.clean();
 
 // Clear all entries from the `users` cache region
-this.broker.cacher.clean("users.**");
+broker.getConfig().getCacher().clean("users.**");
 
 // Delete the specified entries
 cacher.del("users.list");
@@ -295,6 +295,23 @@ public class UserService extends Service {
 
 The above code could be optimized to not delete the entire cache region but just one record
 (by the "userID" - because "userID" is the Cache Key at the "find" `Action`).
+
+::: tip Cross-language invalidation
+Because `broadcast` reaches **every** listener on **every** node regardless of language (see
+[Events across the wire](interop-data-types.html#events)), this pattern works unchanged in a mixed
+Java + Node.js cluster: a Java node broadcasting `cache.clean.users` also triggers a Node.js service
+subscribed to the same event, and vice versa. Have the Node.js side clear *its* local cache in the
+handler:
+
+```js
+// Node.js service in the same cluster
+events: {
+    "cache.clean.users"(ctx) {
+        this.broker.cacher.clean("users.**");
+    }
+}
+```
+:::
 
 ## Local cachers
 
@@ -430,6 +447,12 @@ The performance and operation of `JCache` implementations can be very different.
 To use JCache Cacher, add the following dependency to the build script:  
 [group: 'javax.cache', name: 'cache-api', version: '1.1.1'](https://mvnrepository.com/artifact/javax.cache/cache-api)  
 and it is also necessary to put the dependencies of the JCache implementation in the classpath.
+:::
+
+::: tip Still `javax.cache`, not `jakarta` — on purpose
+Unlike Servlet, JMS or JSON-P, the JSR-107 caching API was **not** part of the `javax` → `jakarta`
+rename. The correct artifact on Java 21 is still `javax.cache:cache-api` (the `1.1.x` line) — this is
+not a leftover from an unfinished migration.
 :::
 
 **Configure JCache cacher**

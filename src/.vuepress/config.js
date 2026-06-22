@@ -72,11 +72,13 @@ module.exports = {
 				sidebarDepth: 2,
 				children: [
 					['interop-overview',     'Overview — the two doors'],
+					['feature-map',          'Node.js → Java feature map'],
 					['interop-setup',        'Setup — one cluster'],
 					['quickstart',           'Quick start'],
 					['call-java-from-node',  'Call Java from Node.js'],
 					['call-node-from-java',  'Call Node.js from Java'],
-					['interop-data-types',   'Data types & features']
+					['interop-data-types',   'Data types & features'],
+					['interop-troubleshooting', 'Troubleshooting']
 				]
 			},
 			{
@@ -84,7 +86,6 @@ module.exports = {
 				sidebarDepth: 2,
 				children: [
 					['introduction',    'Introduction'],
-					['feature-map',     'Node.js → Java feature map'],
 					['minimal-service', 'Your first Java service'],
 					['tree',            'The Tree type'],
 					['concepts',        'Moleculer concepts']
@@ -105,7 +106,9 @@ module.exports = {
 					['logging',           'Logging'],
 					['runner',            'Runner'],
 					['tasks',             'Background processes'],
-					['performance-tips',  'Performance tips']
+					['performance-tips',  'Performance tips'],
+					['metrics',           'Metrics & tracing'],
+					['testing',           'Testing']
 				]
 			},
 			{

@@ -57,6 +57,11 @@ java.exe -classpath <all JARS>
          secret123                                 // Stop password (optional)
 ```
 
+> **Why UDP?** The stop command is a tiny, fire-and-forget **UDP** datagram on the local machine
+> (default port `6786`, guarded by the optional password) — a dependency-free way for an installer,
+> service wrapper or BAT file to ask the JVM to shut down **gracefully**, without opening a JMX or HTTP
+> management endpoint.
+
 With "tomcat7.exe" and "tomcat7w.exe", MoleculerRunner can run as a **Windows Service**.
 The easiest way to do this is to copy the
 [Inno Setup script](https://github.com/moleculer-java/moleculer-spring-boot-demo/blob/master/installer/moleculer.config.iss)
@@ -64,6 +69,14 @@ that creates the installer from
 [this directory](https://github.com/moleculer-java/moleculer-spring-boot-demo/tree/master/installer)
 and modify the required properties (eg. the "ProgramName", "CompanyName" and replace all occurences of "MoleculerJava"
 with your own short program ID, for example "BackendApp01" (without spaces).
+
+::: warning Legacy approach
+The `tomcat7.exe` / `tomcat7w.exe` (Apache Commons Daemon **procrun**) + Inno Setup installer is the
+**legacy** way to run as a Windows service, kept for existing deployments. For new deployments prefer a
+container or a process supervisor — **Docker**, a **systemd** unit on Linux, or
+[**WinSW**](https://github.com/winsw/winsw) on Windows — wrapping the plain
+`services.moleculer.config.MoleculerRunner` start/stop commands shown above.
+:::
 
 See the
 [previous section](logging.html#logging-in-standalone-runtime-mode)

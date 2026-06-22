@@ -9,6 +9,16 @@ The default (pre-set) invocation mode is the `RoundRobinStrategy`.
     <img src="action-balancing.gif" alt="Action balancing diagram" />
 </div>
 
+## Balancing across languages
+
+A `service.action` is addressed the same way no matter which language hosts it, so **all** running
+instances of an action are interchangeable to the balancer — Java and Node.js instances sit in one
+pool. If `mathNode.add` runs on, say, two Node.js nodes and one Java node, a caller's strategy
+(round-robin by default) spreads calls across **all three**, regardless of the caller's own language:
+you do not target a language, you target the action. To keep a call inside the local JVM whenever a
+local instance exists, set `setPreferLocal(true)` on the strategy (see [Round-Robin](#round-robin-strategy)
+below) — every `StrategyFactory` supports it.
+
 ## Built-in Strategies
 
 To configure `Strategy`, set "strategy()" builder option when creating the `ServiceBroker`.

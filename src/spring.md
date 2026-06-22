@@ -43,38 +43,74 @@ them as beans and `SpringRegistrator` wires them into the broker.
 
 ## Option A — Spring Boot (Java configuration)
 
-No XML. Expose the broker as a `@Bean` and add a `SpringRegistrator`:
+No XML. Put the broker in a `@Configuration` as a `@Bean` (Spring starts/stops it via
+`initMethod`/`destroyMethod`), add a `SpringRegistrator`, and let component scanning pick up your
+`@Controller`-annotated services. The two classes below are a **complete, runnable** Java node that
+joins the same NATS cluster as a Node.js node — the `service1.action1` service from
+[above](#how-registration-works) becomes callable from Node.js as
+`broker.call("service1.action1", { a, b })`.
 
 ```java
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.context.annotation.*;
-import services.moleculer.config.*;
-import services.moleculer.*;
+// MoleculerApplication.java — the entry point
+package my.app;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.WebApplicationType;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("my.services")
+@ComponentScan({ "my.app", "my.services" })   // scan the broker config and the services
 public class MoleculerApplication {
 
-    // --- CREATE AND CONFIGURE THE SERVICE BROKER ---
+    public static void main(String[] args) {
+        SpringApplication app = new SpringApplication(MoleculerApplication.class);
+        app.setWebApplicationType(WebApplicationType.NONE); // talks over NATS, serves no HTTP
+        app.run(args);
+    }
+}
+```
 
+```java
+// BrokerConfig.java — the broker as a Spring bean
+package my.app;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import services.moleculer.ServiceBroker;
+import services.moleculer.config.ServiceBrokerConfig;
+import services.moleculer.config.SpringRegistrator;
+import services.moleculer.serializer.JsonSerializer;
+import services.moleculer.transporter.NatsTransporter;
+
+@Configuration
+public class BrokerConfig {
+
+    // Spring starts the broker (initMethod) and stops it on shutdown (destroyMethod).
     @Bean(initMethod = "start", destroyMethod = "stop")
-    public ServiceBroker getServiceBroker() {
-        ServiceBrokerConfig config = new ServiceBrokerConfig();
-        config.setNodeID("node1");
-        config.setTransporter(...);
-        config.setStrategyFactory(...);
-        config.setCacher(...);
-        return new ServiceBroker(config);
+    public ServiceBroker serviceBroker() {
+        ServiceBrokerConfig cfg = new ServiceBrokerConfig();
+        cfg.setNodeID("java-node");                  // unique in the cluster (Node side uses e.g. "node-node")
+
+        NatsTransporter nats = new NatsTransporter("nats://localhost:4222"); // the shared bus
+        nats.setSerializer(new JsonSerializer());    // JSON: the cross-language default
+        cfg.setTransporter(nats);
+
+        // No broker.createService(...) here: the SpringRegistrator below discovers the
+        // @Controller-annotated services and registers them automatically.
+        return new ServiceBroker(cfg);
     }
 
-    // --- SPRING REGISTRATOR FOR MOLECULER SERVICES ---
-
+    // Discovers @Controller/@Component beans of type Service and registers them with the broker.
     @Bean
-    public SpringRegistrator getSpringRegistrator() {
+    public SpringRegistrator springRegistrator() {
         return new SpringRegistrator();
     }
 }
 ```
+
+Add the NATS client (`io.nats:jnats`) to your `pom.xml` alongside `moleculer-java`; see
+[Setup — one cluster](interop-setup.html) for the dependency block and the cluster-alignment rules.
 
 ## Option B — Classic XML configuration
 
@@ -138,7 +174,9 @@ lifecycle run independently. See [Lifecycle](lifecycle.html#service-lifecycle).
 ## Starting and packaging
 
 A Spring Boot Moleculer app can run standalone (Netty) or inside a Jakarta EE servlet container, and
-is typically launched with the **[Moleculer Runner](runner.html)**. The
-[Spring Boot demo](https://moleculer-java.github.io/moleculer-spring-boot-demo/) is a complete,
-runnable reference that wires the broker, the Web API Gateway, the REPL and JMX together and ships a
-Windows installer.
+is typically launched with the **[Moleculer Runner](runner.html)**. For a minimal, runnable
+**Spring Boot ↔ Node.js interop** reference, see the
+[integration demo](https://github.com/moleculer-java/moleculer-integration-demo) — a Spring Boot Java
+node and a Moleculer 0.15 Node.js node on one NATS cluster. The larger
+[Spring Boot demo](https://moleculer-java.github.io/moleculer-spring-boot-demo/) wires the broker, the
+Web API Gateway, the REPL and JMX together and ships a Windows installer.

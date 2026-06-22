@@ -115,7 +115,7 @@ The Moleculer packages can be downloaded from the central
 
 [This demo project](https://moleculer-java.github.io/moleculer-spring-boot-demo/)
 demonstrating the basic capabilities of a Moleculer-based web application. 
-The project can be imported into the Eclipse IDE or IntelliJ IDEA.
+The project can be opened in any IDE — VS Code (with the Java extensions), IntelliJ IDEA or Eclipse.
 The brief examples illustrate the following:
 
 - Integration of Moleculer API into the [Spring Boot Framework](spring.html)

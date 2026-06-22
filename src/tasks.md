@@ -220,8 +220,8 @@ public class TaskService extends Service {
 
                 // Get request and response Promise
                 RequestResponsePair pair = queue.take();
-                Tree request = pair.request;
-                Promise response = pair.response;                
+                Tree request = pair.request();
+                Promise response = pair.response();
 
                 // Complete the Promise
                 System.out.println("Processing packet: " + request);                
@@ -233,19 +233,9 @@ public class TaskService extends Service {
         }
     }
 
-    // --- REQUEST / RESPONSE CONTAINER ---
+    // --- REQUEST / RESPONSE CONTAINER (a Java record) ---
 
-    private static class RequestResponsePair {
-
-        private final Tree request;
-        private final Promise response;
-
-        RequestResponsePair(Tree request, Promise response) {
-            this.request = request;
-            this.response = response;
-        }
-
-    }    
+    private record RequestResponsePair(Tree request, Promise response) {}
 }
 ```
 

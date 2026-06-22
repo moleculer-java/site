@@ -341,6 +341,9 @@ TcpTransporter transporter = new TcpTransporter(new URL("file:///nodes.json"));
 ]
 ```
 
+<details>
+<summary><b>Advanced — how Gossip discovery works</b></summary>
+
 Network traffic is approximately constant when using TCP Transporter.
 During operation, each node talks to another random node from time to time.
 They communicate statements about what they know about other nodes of the cluster.
@@ -364,6 +367,8 @@ Dark-green means new information, light-green means older information
 The numbers represent the sequence number.
 Not only the on / off status is distributed over the network in this way,
 but also the list of `Services` and their properties.
+
+</details>
 
 **Options of TCP Transporter**
 

@@ -144,6 +144,46 @@ Finally install the `Middleware` using the "use" function of `ServiceBroker`:
 broker.use(new AccessControllerMiddleware());
 ```
 
+## Asynchronous (non-blocking) middleware
+
+`action.handler(ctx)` may answer **asynchronously** (it can return a `Promise`, not just a `Tree`). To
+post-process such a response, wrap whatever the action returns in a `Promise` and chain `.then(...)` —
+never `waitFor(...)` inside a middleware, which would block the calling thread:
+
+```java
+public class TimingMiddleware extends Middleware {
+
+    @Override
+    public Action install(Action action, Tree config) {
+        return new Action() {
+            @Override
+            public Object handler(Context ctx) throws Exception {
+                long start = System.nanoTime();
+
+                // new Promise(...) accepts a Tree, a value OR a Promise, so it
+                // works the same whether the action answered sync or async:
+                return new Promise(action.handler(ctx)).then(rsp -> {
+
+                    // runs AFTER the (possibly remote/async) action resolves
+                    long micros = (System.nanoTime() - start) / 1000;
+                    logger.info("{} took {} us", ctx.name, micros);
+                    return rsp; // pass the response through unchanged
+
+                }).catchError(err -> {
+
+                    // the async equivalent of an "error" hook
+                    logger.error("{} failed", ctx.name, err);
+                    throw err;
+                });
+            }
+        };
+    }
+}
+```
+
+Because `new Promise(action.handler(ctx))` normalises the return value, one middleware handles
+synchronous and asynchronous actions identically.
+
 ## Caching the response of Actions
 
 Among many other uses, `Middleware` is used to cache the response of `Action`.

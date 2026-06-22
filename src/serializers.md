@@ -5,6 +5,16 @@ needs a `Serializer` Module which serializes & deserializes the transferable dat
 The default `Serializer` is the `JsonSerializer` but there are several built-in `Serializers`
 can convert messages into MessagePack, BSON, CBOR, SMILE, Amazon ION or other binary formats.
 
+::: warning Cross-language clusters: only JSON and MessagePack interoperate
+A Java node and a **Node.js** node can understand each other only with the **`JsonSerializer`**
+(the default) or the **`MsgPackSerializer`** — these are the only two formats the Node.js
+implementation also speaks. Every binary serializer below (**BSON, CBOR, Amazon ION, SMILE** and the
+Java-object serializer) is **Java-only**. Both nodes in a cluster must use the **same** serializer, so
+if you pick one of the Java-only formats for performance, a Node.js node will **silently** fail to
+decode every packet — there is no error, the two nodes simply never see each other. The cross-language
+common denominator is **JSON** (or MessagePack).
+:::
+
 ## JSON Serializer
 
 ![](https://img.shields.io/badge/Node.js-Compatible-brightgreen.svg)  
@@ -13,7 +23,7 @@ It serializes the packets to JSON string and deserializes the received JSON byte
 [Tree](https://berkesa.github.io/datatree/introduction.html) objects.
 The performance of JSON `Serializers` in Java and JavaScript is very good,
 JSON serialization is usually faster than most binary `Serializers`.
-This `Serializer` is compatible with the JavaScript/Go version of Moleculer.
+This `Serializer` is compatible with the JavaScript/Node.js version of Moleculer.
 
 ```java
 NatsTransporter transporter = new NatsTransporter("nats://nats.server:4222");
@@ -77,6 +87,8 @@ To use MessagePack `Serializer`, add the following dependency to the build scrip
 
 ## BSON Serializer
 
+> **Java-only** — not compatible with the Node.js implementation; use it only in a Java-to-Java cluster.
+
 Built-in [BSON](http://bsonspec.org/) `Serializer`.
 BSON, short for Binary JSON, is a binary-encoded serialization of JSON-like documents.
 Like JSON, BSON supports the embedding of documents and arrays within other documents and arrays. 
@@ -91,6 +103,8 @@ To use BSON `Serializer`, add the following dependency to the build script:
 :::
 
 ## CBOR Serializer
+
+> **Java-only** — not compatible with the Node.js implementation; use it only in a Java-to-Java cluster.
 
 Built-in [CBOR](https://cbor.io/) `Serializer`.
 CBOR is based on the wildly successful JSON data model: numbers, strings,
@@ -108,6 +122,8 @@ To use CBOR `Serializer`, add the following dependency to the build script:
 
 ## Amazon ION Serializer
 
+> **Java-only** — not compatible with the Node.js implementation; use it only in a Java-to-Java cluster.
+
 Built-in [ION](http://amzn.github.io/ion-docs/) `Serializer`.
 Amazon Ion is a richly-typed, self-describing, hierarchical data
 serialization format offering interchangeable binary and text
@@ -124,6 +140,8 @@ To use ION `Serializer`, add the following dependency to the build script:
 :::
 
 ## SMILE Serializer
+
+> **Java-only** — not compatible with the Node.js implementation; use it only in a Java-to-Java cluster.
 
 Built-in [SMILE](https://en.wikipedia.org/wiki/Smile_(data_interchange_format)) `Serializer`.
 SMILE is a computer data interchange format based on JSON. It can also be
@@ -213,9 +231,10 @@ const broker = new ServiceBroker({
 });
 ```
 
-::: warning Avoid "invalid key length" error
-[You need to install the Unlimited Strength Jurisdiction Policy Files for JCE
-to use 256-bit key.](http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html).
+::: tip 256-bit keys work out of the box on Java 21
+Unlimited-strength cryptography has been enabled by default since Java 8u161 / Java 9, so on the
+Java 21 baseline no JCE policy files are needed for AES-256. (On long-obsolete JREs you had to install
+the *Unlimited Strength Jurisdiction Policy Files* by hand — that step is no longer required.)
 :::
 
 ## Compressing messages

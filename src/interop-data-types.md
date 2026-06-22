@@ -27,6 +27,7 @@ cannot represent them identically, so they would not survive the round trip. For
 | Events (`emit` and `broadcast`) | ✓ | [Events](#events) |
 | Cached action results (with TTL) | ✓ | [Caching](#caching-with-ttl) |
 | Request/response metadata | ✓ | [Metadata](#metadata) |
+| Errors & exceptions (typed, structured) | ✓ | [Errors & exceptions](#errors-exceptions) |
 | Binary data | ✓ (streaming) | [Binary streaming](#binary-streaming) |
 
 ## Primitives
@@ -425,6 +426,151 @@ String seenBy = rsp.getMeta().get("seenBy", ""); // "node" — response meta mer
 :::
 
 ::::
+
+The most common real use is **one-directional**: a caller passes cross-cutting context (tenant, auth
+token, locale) in `meta` — never in `params` — and the remote service only *reads* it. Here a Node.js
+caller scopes a Java service by tenant:
+
+:::: tabs :options="{ useUrlFragment: false }"
+
+::: tab "Node.js (JavaScript)"
+```js
+// cross-cutting context travels in meta, not in the params object
+await broker.call("billing.createInvoice", { amount: 100 }, { meta: { tenant: "acme" } });
+```
+:::
+
+::: tab Java
+```java
+// the Java service reads it from the call context and scopes its work
+public Action createInvoice = ctx -> {
+    String tenant = ctx.params.getMeta().get("tenant", (String) null);
+    if (tenant == null) {
+        throw new ValidationError("Missing 'tenant' in meta", "java-node", "TENANT_MISSING");
+    }
+    // ... use 'tenant' to choose the datasource / schema, then return a result ...
+    return new Tree().put("ok", true);
+};
+```
+:::
+
+::::
+
+## Errors & exceptions
+
+An error is **not** just a string on the wire — it crosses as a structured object, so the calling side
+in the other language gets a typed exception with the same fields, not a flattened message. When a Java
+action throws (or a `Promise` rejects), moleculer-java serializes the error into the response packet;
+the Node.js caller receives a Moleculer error with the matching properties, and vice versa.
+
+These are the fields that travel (the Java classes live in `services.moleculer.error`):
+
+| Wire field | Node.js (`err.…`) | Java (`MoleculerError`) | Meaning |
+|---|---|---|---|
+| `name` | `err.name` | `getName()` | The error **class** — the cross-language discriminator used to rebuild the right type. |
+| `message` | `err.message` | `getMessage()` | Human-readable message. |
+| `code` | `err.code` | `getCode()` | HTTP-like status code (e.g. `422`, `500`). |
+| `type` | `err.type` | `getType()` | Machine-readable type string **you choose** (e.g. `"TENANT_MISSING"`). |
+| `data` | `err.data` | `getData()` → `Tree` | Arbitrary JSON detail payload. |
+| `retryable` | `err.retryable` | `isRetryable()` | Whether the caller's retry logic may retry the call. |
+| `nodeID` | `err.nodeID` | originating node id | Which node produced the error. |
+| `stack` | `err.stack` | `getStack()` | Stack trace, as a string. |
+
+**Java throws → Node.js catches.** The Java side throws a typed error; the Node.js caller reads the
+same fields back:
+
+:::: tabs :options="{ useUrlFragment: false }"
+
+::: tab Java
+```java
+// services.moleculer.error.ValidationError — code is fixed to 422
+public Action checkout = ctx -> {
+    if (ctx.params.getMeta().get("tenant", (String) null) == null) {
+        // (message, nodeID, type, then key/value data pairs)
+        throw new ValidationError("Missing 'tenant' in meta", "java-node", "TENANT_MISSING",
+                "field", "tenant");
+    }
+    // ... normal result ...
+    return new Tree().put("ok", true);
+};
+```
+:::
+
+::: tab "Node.js (JavaScript)"
+```js
+try {
+    await broker.call("dataJava.checkout", { item: "book" });
+} catch (err) {
+    err.name;      // "ValidationError"
+    err.message;   // "Missing 'tenant' in meta"
+    err.code;      // 422
+    err.type;      // "TENANT_MISSING"
+    err.data;      // { field: "tenant" }
+    err.retryable; // false
+    err.nodeID;    // "java-node"
+}
+```
+:::
+
+::::
+
+**Node.js throws → Java catches.** A built-in Node.js Moleculer error is rebuilt as the matching Java
+class on arrival:
+
+:::: tabs :options="{ useUrlFragment: false }"
+
+::: tab "Node.js (JavaScript)"
+```js
+const { MoleculerClientError } = require("moleculer").Errors;
+
+checkout(ctx) {
+    if (!ctx.meta.tenant) {
+        // (message, code, type, data)
+        throw new MoleculerClientError("Missing tenant", 422, "TENANT_MISSING", { field: "tenant" });
+    }
+    return { ok: true };
+}
+```
+:::
+
+::: tab Java
+```java
+// services.moleculer.error.MoleculerClientError, rebuilt from the wire "name"
+broker.call("dataNode.checkout", params).then(rsp -> {
+    // success
+    return rsp;
+}).catchError(err -> {
+    if (err instanceof MoleculerClientError) {
+        MoleculerError e = (MoleculerError) err;
+        e.getMessage();   // "Missing tenant"
+        e.getCode();      // 422
+        e.getType();      // "TENANT_MISSING"
+        e.getData();      // { "field": "tenant" } as a Tree
+        e.isRetryable();  // false
+    }
+    return null;
+});
+// The blocking form (.waitFor(...)) throws the same exception instead of returning.
+```
+:::
+
+::::
+
+A few rules that are pure protocol behavior — you cannot guess them, so rely on them:
+
+- **`name` is the discriminator.** moleculer-java maps a known `name` back to the matching Java class
+  (`MoleculerError`, `MoleculerRetryableError`, `MoleculerServerError`, `MoleculerClientError`,
+  `ValidationError` (422), `ServiceNotFoundError`, `RequestTimeoutError`, …). An **unknown** `name`
+  (e.g. a custom Node.js error class) arrives as a **generic `MoleculerError`** that still carries all
+  the fields above. Node.js applies the same fall-back in the other direction.
+- **A plain Java exception is auto-wrapped.** If something that is *not* a `MoleculerError` escapes an
+  action, moleculer-java wraps it as a generic `MoleculerError` (`name` `"MoleculerError"`, `code`
+  `500`, `type` `"UNKNOWN_ERROR"`, `retryable` `false`) before sending — the other side never receives a
+  raw Java stack, always the structured shape.
+- **`retryable` drives retries.** The caller's retry logic (see
+  [Fault tolerance](fault-tolerance.html) and `CallOptions.retryCount`) only retries calls that failed
+  with a `retryable = true` error; throw a `MoleculerRetryableError` (or set `retryable`) when a retry
+  could succeed.
 
 ## Binary streaming
 

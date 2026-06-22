@@ -8,6 +8,9 @@ were made for JSON APIs with
 [with this test file](https://github.com/berkesa/datatree-adapters/blob/master/src/test/resources/sample-small.json).
 There is quite a difference in speed between the various JSON and binary APIs.
 
+<details>
+<summary><b>Advanced — benchmark graphs (deserialization &amp; serialization speed)</b></summary>
+
 ### Deserialization
 
 The graph below shows the speed of the various JSON parsers.
@@ -31,6 +34,8 @@ The fastest two APIs are "**Jackson**" and "**DSL-Json**":
 <div align="center">
     <img src="perf/json-writers.png" alt="JSON Generators / Serializers" />
 </div>
+
+</details>
 
 **Conclusion**
 

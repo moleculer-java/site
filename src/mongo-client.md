@@ -5,6 +5,13 @@ The "moleculer-java-mongo" is an asynchronous
 client, specially designed for Java-based Moleculer Ecosystem.
 The API can be conveniently used with the Spring Framework (but it works without Spring).
 
+::: tip Coming from `moleculer-db` or `moleculer-io`?
+There is **no general `moleculer-db` port** in Java — no mixin/adapter layer. For database access this
+client is the Java pattern: a `MongoDAO` you extend per collection, wired into a service as shown below.
+For `moleculer-io`-style browser messaging, use the
+[Web API Gateway's WebSocket support](web-websocket.html) instead.
+:::
+
 ## Download
 
 **Maven**

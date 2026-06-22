@@ -91,5 +91,6 @@ streams — with verified examples in both languages.
 - **[Data types & features](interop-data-types.html)** — the compatibility reference.
 
 > All code on these interop pages is taken from a runnable, test-verified
-> [integration demo](https://github.com/moleculer-java) where a Spring Boot Java node and a Moleculer
-> 0.15 Node.js node prove each scenario passes in both directions.
+> [integration demo](https://github.com/moleculer-java/moleculer-integration-demo) where a Spring Boot
+> Java node and a Moleculer 0.15 Node.js node prove each scenario passes in both directions. Clone it,
+> start NATS, run the Java side and the Node side, and watch the checks pass.

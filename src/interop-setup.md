@@ -1,18 +1,29 @@
 # Setup — one cluster
 
-A Java node and a Node.js node join the **same Moleculer cluster** when four things line up:
+A Java node and a Node.js node join the **same Moleculer cluster** when five things line up:
 
 1. **The same transporter** — both connect to one message bus. These examples use **NATS** at
-   `nats://localhost:4222`.
+   `nats://localhost:4222`. A transporter is **mandatory** for clustering (see the warning below).
 2. **The same serializer** — **JSON** on both sides (the default), the common denominator that makes the
    two frameworks wire-compatible.
 3. **The same protocol version** — Moleculer JS 0.15 speaks **v5**; moleculer-java 2.0.0 defaults to
    **v5**, so they match out of the box.
-4. **A unique `nodeID` per process** — every node in the cluster needs its own id; colliding ids break
+4. **The same `namespace`** — both nodes must run in the same namespace (the default is the empty
+   namespace `""`). The namespace is baked into the transporter's channel names, so nodes in different
+   namespaces never see each other.
+5. **A unique `nodeID` per process** — every node in the cluster needs its own id; colliding ids break
    discovery.
 
 Get those right and discovery, routing, request/response, events and streaming all work across the
 language boundary with no gateway in between.
+
+::: danger No transporter = local-only (the #1 "why can't Node.js see my Java node?")
+If you never call `cfg.setTransporter(...)`, the broker's transporter stays `null` by default and the
+node starts in **local-only mode**: it runs, logs no error, and serves only its own in-process
+services. A Node.js node **will never discover it** — it simply won't appear in `$node.list`. Clustering
+begins the moment you attach a transporter, which every example on this page does. (The same is true on
+the Node.js side: a broker started with no `transporter` is isolated.)
+:::
 
 ## 1. Add the dependency
 
@@ -155,6 +166,7 @@ compatibility, see [Transporters](transporters.html#types-of-transporters); for 
 | Transporter | `transporter: "nats://localhost:4222"` | `new NatsTransporter("nats://localhost:4222")` | Both nodes must share one bus. |
 | Serializer | `serializer: "JSON"` | `nats.setSerializer(new JsonSerializer())` | JSON is the wire-compatible default on both. |
 | Protocol | v5 (Moleculer 0.15, default) | `cfg.setProtocolVersion("5")` (default) | A node silently drops packets with a different version. |
+| `namespace` | `namespace: "..."` (default `""`) | `cfg.setNamespace("...")` (default `""`) | Part of the channel names; nodes in different namespaces never meet. |
 | `nodeID` | `nodeID: "node-node"` | `cfg.setNodeID("java-node")` | Must be unique; colliding ids break discovery. |
 
 > Talking to a legacy **Moleculer JS 0.14** node? Set the Java side to `cfg.setProtocolVersion("4")` —

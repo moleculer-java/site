@@ -46,7 +46,7 @@ left out. Each row links to the page with the details.
 | `mcall([...])` | `Promise.all(call1, call2, ...)` | No `mcall`; combine promises. |
 | `ctx.emit` / `ctx.broadcast` | `ctx.emit` / `ctx.broadcast`; `broker.emit/broadcast/broadcastLocal` | [Events](events.html) |
 | `$node.list/services/actions/events/health` | same names | [Internal services](internal-services.html) |
-| `$node.metrics` / `$node.options` | ✗ none | Use the `$node.*` actions above. |
+| `$node.metrics` / `$node.options` (actions) | ✗ none | No `$node.metrics` *action* — but metrics **do** exist (Micrometer); see Tooling & runtime below. |
 
 ## Fault tolerance
 
@@ -67,6 +67,9 @@ left out. Each row links to the page with the details.
 | `broker.loadServices("./services")` | ✗ none — register with `broker.createService(...)` | |
 | `--hot` hot reload | ✗ none — restart the broker | |
 | cachers, transporters, serializers, strategies | the same set, Node-compatible | [Caching](caching.html) · [Transporters](transporters.html) · [Serializers](serializers.html) |
+| **Metrics** (`metrics: { enabled }`) | ✓ **Micrometer**-based — off until `metricsEnabled(true)` | [Metrics & tracing](metrics.html) |
+| built-in **tracing** (`tracing`, Jaeger/Zipkin) | ✗ none — propagate via `meta`, or use an external APM | [Metrics & tracing](metrics.html#tracing) |
+| **`moleculer-db`** / **`moleculer-io`** (ecosystem) | ✗ no general port — `moleculer-java-mongo` (DB), Web WebSocket (io) | [MongoDB](mongo-client.html) · [WebSocket](web-websocket.html) |
 
 ---
 
