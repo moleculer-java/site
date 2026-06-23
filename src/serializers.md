@@ -231,9 +231,9 @@ const broker = new ServiceBroker({
 });
 ```
 
-::: tip 256-bit keys work out of the box on Java 21
+::: tip 256-bit keys work out of the box on Java 17
 Unlimited-strength cryptography has been enabled by default since Java 8u161 / Java 9, so on the
-Java 21 baseline no JCE policy files are needed for AES-256. (On long-obsolete JREs you had to install
+Java 17 baseline no JCE policy files are needed for AES-256. (On long-obsolete JREs you had to install
 the *Unlimited Strength Jurisdiction Policy Files* by hand — that step is no longer required.)
 :::
 

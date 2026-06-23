@@ -451,7 +451,7 @@ and it is also necessary to put the dependencies of the JCache implementation in
 
 ::: tip Still `javax.cache`, not `jakarta` — on purpose
 Unlike Servlet, JMS or JSON-P, the JSR-107 caching API was **not** part of the `javax` → `jakarta`
-rename. The correct artifact on Java 21 is still `javax.cache:cache-api` (the `1.1.x` line) — this is
+rename. The correct artifact on Java 17 is still `javax.cache:cache-api` (the `1.1.x` line) — this is
 not a leftover from an unfinished migration.
 :::
 

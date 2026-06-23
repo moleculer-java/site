@@ -27,7 +27,7 @@ common platform for modules written in different languages.
 
 ## Prerequisites
 
-Moleculer Java requires Java 21.
+Moleculer Java requires Java 17.
 
 ## A first service
 
