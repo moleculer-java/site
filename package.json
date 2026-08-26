@@ -1,6 +1,6 @@
 {
   "name": "moleculer-java-site",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "Documentation website for Moleculer for Java (VuePress 1.x).",
   "homepage": "https://moleculer-java.github.io/site/",

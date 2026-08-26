@@ -13,7 +13,7 @@ It is also possible to create **custom commands**. The console can be used via s
     <dependency>
         <groupId>com.github.berkesa</groupId>
         <artifactId>moleculer-java-repl</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.0</version>
     </dependency>
 </dependencies>
 ```

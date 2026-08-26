@@ -46,7 +46,7 @@ The number of servers (Moleculer nodes) can vary depending on the load.
     <dependency>
         <groupId>com.github.berkesa</groupId>
         <artifactId>moleculer-java-web</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.0</version>
         <scope>runtime</scope>
     </dependency>
 </dependencies>

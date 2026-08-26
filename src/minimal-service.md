@@ -18,14 +18,14 @@ or Spring, those are add-ons — they do not change the service you write here.
     <dependency>
         <groupId>com.github.berkesa</groupId>
         <artifactId>moleculer-java</artifactId>
-        <version>2.0.0</version>
+        <version>2.1.0</version>
     </dependency>
 
     <!-- NATS transporter client (optional inside moleculer-java, so declare it) -->
     <dependency>
         <groupId>io.nats</groupId>
         <artifactId>jnats</artifactId>
-        <version>2.21.1</version>
+        <version>2.26.2</version>
     </dependency>
 
     <!-- An SLF4J binding so logs go somewhere (see the Logging page) -->

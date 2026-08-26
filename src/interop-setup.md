@@ -6,7 +6,7 @@ A Java node and a Node.js node join the **same Moleculer cluster** when five thi
    `nats://localhost:4222`. A transporter is **mandatory** for clustering (see the warning below).
 2. **The same serializer** — **JSON** on both sides (the default), the common denominator that makes the
    two frameworks wire-compatible.
-3. **The same protocol version** — Moleculer JS 0.15 speaks **v5**; moleculer-java 2.0.0 defaults to
+3. **The same protocol version** — Moleculer JS 0.15 speaks **v5**; moleculer-java 2.1.0 defaults to
    **v5**, so they match out of the box.
 4. **The same `namespace`** — both nodes must run in the same namespace (the default is the empty
    namespace `""`). The namespace is baked into the transporter's channel names, so nodes in different
@@ -47,7 +47,7 @@ the Node.js side: a broker started with no `transporter` is isolated.)
 <dependency>
     <groupId>com.github.berkesa</groupId>
     <artifactId>moleculer-java</artifactId>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
 </dependency>
 
 <!-- The NATS transporter is OPTIONAL inside moleculer-java,
@@ -55,7 +55,7 @@ the Node.js side: a broker started with no `transporter` is isolated.)
 <dependency>
     <groupId>io.nats</groupId>
     <artifactId>jnats</artifactId>
-    <version>2.21.1</version>
+    <version>2.26.2</version>
 </dependency>
 ```
 :::

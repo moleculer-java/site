@@ -82,7 +82,7 @@ transporter.setSerializer(new MsgPackSerializer());
 
 ::: warning MessagePack dependencies
 To use MessagePack `Serializer`, add the following dependency to the build script:  
-[group: 'org.msgpack', name: 'jackson-dataformat-msgpack', version: '0.9.9'](https://mvnrepository.com/artifact/org.msgpack/jackson-dataformat-msgpack)  
+[group: 'org.msgpack', name: 'jackson-dataformat-msgpack', version: '0.9.12'](https://mvnrepository.com/artifact/org.msgpack/jackson-dataformat-msgpack)  
 :::
 
 ## BSON Serializer
@@ -117,7 +117,7 @@ transporter.setSerializer(new CborSerializer());
 
 ::: warning CBOR dependencies
 To use CBOR `Serializer`, add the following dependency to the build script:  
-[group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-cbor', version: '2.19.0'](https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor)
+[group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-cbor', version: '2.22.2'](https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-cbor)
 :::
 
 ## Amazon ION Serializer
@@ -136,7 +136,7 @@ transporter.setSerializer(new IonSerializer());
 
 ::: warning Amazon ION dependencies
 To use ION `Serializer`, add the following dependency to the build script:  
-[group: 'com.amazon.ion', name: 'ion-java', version: '1.11.10'](https://mvnrepository.com/artifact/com.amazon.ion/ion-java)
+[group: 'com.amazon.ion', name: 'ion-java', version: '1.12.0'](https://mvnrepository.com/artifact/com.amazon.ion/ion-java)
 :::
 
 ## SMILE Serializer
@@ -156,7 +156,7 @@ transporter.setSerializer(new SmileSerializer());
 
 ::: warning SMILE dependencies
 To use SMILE `Serializer`, add the following dependency to the build script:  
-[group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-smile', version: '2.19.0'](https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-smile)
+[group: 'com.fasterxml.jackson.dataformat', name: 'jackson-dataformat-smile', version: '2.22.2'](https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-smile)
 :::
 
 ## Custom Serializer

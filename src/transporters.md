@@ -39,7 +39,7 @@ ServiceBroker broker = ServiceBroker.builder()
 
 ::: warning NATS dependencies
 To use NATS Transporter, add the following dependency to the build script:  
-[group: 'io.nats', name: 'jnats', version: '2.21.1'](https://mvnrepository.com/artifact/io.nats/jnats)
+[group: 'io.nats', name: 'jnats', version: '2.26.2'](https://mvnrepository.com/artifact/io.nats/jnats)
 :::
 
 Detailed example:
@@ -90,7 +90,7 @@ ServiceBroker broker = ServiceBroker.builder()
 
 ::: warning Redis dependencies
 To use Redis Transporter, add the following dependency to the build script:  
-[group: 'io.lettuce', name: 'lettuce-core', version: '6.7.1.RELEASE'](https://mvnrepository.com/artifact/io.lettuce/lettuce-core)
+[group: 'io.lettuce', name: 'lettuce-core', version: '6.8.2.RELEASE'](https://mvnrepository.com/artifact/io.lettuce/lettuce-core)
 :::
 
 Detailed example:
@@ -159,7 +159,7 @@ ServiceBroker broker = ServiceBroker.builder()
 
 ::: warning AMQP dependencies
 To use AMQP Transporter, add the following dependency to the build script:  
-[group: 'com.rabbitmq', name: 'amqp-client', version: '5.25.0'](https://mvnrepository.com/artifact/com.rabbitmq/amqp-client)
+[group: 'com.rabbitmq', name: 'amqp-client', version: '5.35.0'](https://mvnrepository.com/artifact/com.rabbitmq/amqp-client)
 :::
 
 Detailed example:
@@ -197,7 +197,7 @@ ServiceBroker broker = ServiceBroker.builder()
 
 ::: warning Kafka dependencies
 To use Kafka Transporter, add the following dependency to the build script:  
-[group: 'org.apache.kafka', name: 'kafka-clients', version: '4.3.0'](https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients)
+[group: 'org.apache.kafka', name: 'kafka-clients', version: '4.3.1'](https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients)
 :::
 
 Detailed example:

@@ -111,8 +111,8 @@ differ — to switch, swap `new MustacheEngine()` for the class in the table and
 | Engine | Engine class | Maven dependency |
 |---|---|---|
 | [Mustache](https://github.com/spullara/mustache.java) | `MustacheEngine` | `com.github.spullara.mustache.java:compiler:0.9.14` |
-| [Handlebars](https://github.com/jknack/handlebars.java) | `HandlebarsEngine` | `com.github.jknack:handlebars:4.5.1` |
-| [DataTree](https://berkesa.github.io/datatree-templates/) | `DataTreeEngine` | `com.github.berkesa:datatree-templates:2.0.0` |
+| [Handlebars](https://github.com/jknack/handlebars.java) | `HandlebarsEngine` | `com.github.jknack:handlebars:4.5.4` |
+| [DataTree](https://berkesa.github.io/datatree-templates/) | `DataTreeEngine` | `com.github.berkesa:datatree-templates:2.1.0` |
 | [FreeMarker](https://freemarker.apache.org/) | `FreeMarkerEngine` | `org.freemarker:freemarker:2.3.34` |
 | [Pebble](https://github.com/PebbleTemplates/pebble) | `PebbleEngine` | `io.pebbletemplates:pebble:3.2.4` |
 | [Thymeleaf](https://www.thymeleaf.org/) | `ThymeleafEngine` | `org.thymeleaf:thymeleaf:3.1.5.RELEASE` |

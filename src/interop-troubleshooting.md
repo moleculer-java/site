@@ -76,7 +76,7 @@ cfg.setNamespace("prod");   // must match the Node.js side: namespace: "prod"
 discovery itself never completes.
 
 **Cause:** a node **silently drops** packets whose `ver` field doesn't match its own protocol version.
-moleculer-java 2.0.0 and Moleculer JS 0.15 both default to **v5**, so out of the box they match — but a
+moleculer-java 2.1.0 and Moleculer JS 0.15 both default to **v5**, so out of the box they match — but a
 **legacy Moleculer JS 0.14** node speaks **v4**.
 
 **Fix:** only when talking to a legacy 0.14 node, set the Java side to v4 (v4 and v5 are wire-compatible

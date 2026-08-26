@@ -370,7 +370,7 @@ Supports global and entry-level TTL configuration.
 
 ::: warning Redis dependencies
 To use Redis Cacher, add the following dependency to the build script:  
-[group: 'io.lettuce', name: 'lettuce-core', version: '6.7.1.RELEASE'](https://mvnrepository.com/artifact/io.lettuce/lettuce-core)
+[group: 'io.lettuce', name: 'lettuce-core', version: '6.8.2.RELEASE'](https://mvnrepository.com/artifact/io.lettuce/lettuce-core)
 :::
 
 **Configure Redis cacher**

@@ -67,7 +67,7 @@ Three things must line up between the two nodes. They are covered in
    `nats://localhost:4222`).
 2. **The same serializer** — **JSON** is the default on both frameworks and the common denominator that
    makes them wire-compatible.
-3. **The same protocol version** — Moleculer JS 0.15 speaks protocol **v5**; moleculer-java 2.0.0
+3. **The same protocol version** — Moleculer JS 0.15 speaks protocol **v5**; moleculer-java 2.1.0
    defaults to **v5** too, so they match out of the box (configurable back to v4 for a legacy 0.14 node).
 
 ## Data across the boundary
