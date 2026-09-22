@@ -17,7 +17,7 @@ If a connection is lost, the client automatically rebuilds the connection.
 	<dependency>
 		<groupId>com.github.berkesa</groupId>
 		<artifactId>moleculer-java-httpclient</artifactId>
-		<version>2.1.1</version>
+		<version>2.2.0</version>
 	</dependency>
 </dependencies>
 ```

@@ -55,7 +55,7 @@ broker.call("$node.list").then(rsp -> {
     ],
     "client":{
       "type":"java",
-      "version":"2.1.1",
+      "version":"2.2.0",
       "langVersion":"21.0.4"
     }
   }
@@ -322,7 +322,7 @@ broker.call("$node.health").then(rsp -> {
   },
   "client":{
     "type":"java",
-    "version":"2.1.1",
+    "version":"2.2.0",
     "langVersion":"21.0.4"
   },
   "net":{

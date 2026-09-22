@@ -46,7 +46,7 @@ The number of servers (Moleculer nodes) can vary depending on the load.
     <dependency>
         <groupId>com.github.berkesa</groupId>
         <artifactId>moleculer-java-web</artifactId>
-        <version>2.1.1</version>
+        <version>2.2.0</version>
         <scope>runtime</scope>
     </dependency>
 </dependencies>
@@ -369,6 +369,61 @@ gateway.setBeforeCall((currentRoute, req, rsp, data) -> {
 });
 ```
 
+## Error handler
+
+When an `Action` throws (or the request body cannot be parsed, a hook fails,
+or the response cannot be serialized), the API Gateway sends a default JSON
+error response: the serialized `MoleculerError` with its status code (`500`
+for a plain Java exception), `name`, `message`, `type` and `data` fields.
+
+To send a custom error response instead, set an `ErrorProcessor` - the Java
+counterpart of the route-level and global-level `onError` settings of the
+Node.js moleculer-web. A route-level handler applies to one `Route`; a
+gateway-level handler applies to every route that has no handler of its own,
+and to errors that occur before the request is routed (for example a
+middleware that fails):
+
+```java
+// Route-level error handler
+route.setOnError((currentRoute, req, rsp, cause) -> {
+    byte[] body = ("{\"error\":\"" + cause.getMessage() + "\"}").getBytes(StandardCharsets.UTF_8);
+    rsp.setStatus(500);
+    rsp.setHeader("Content-Type", "application/json; charset=utf-8");
+    rsp.setHeader("Content-Length", Integer.toString(body.length));
+    rsp.send(body);
+    rsp.end();
+});
+
+// Gateway-level (global) error handler
+gateway.setOnError((currentRoute, req, rsp, cause) -> {
+    rsp.setStatus(500);
+    rsp.setHeader("Content-Type", "text/plain");
+    rsp.send(("Global error: " + cause.getMessage()).getBytes(StandardCharsets.UTF_8));
+    rsp.end();
+});
+```
+
+The rules of the handler:
+
+- The handler **must complete the response** by calling `rsp.end()`
+  (synchronously, or later from an asynchronous callback); otherwise the
+  request stays unhandled and the client waits.
+- `cause` is the exception the `Action` actually threw (the wrappers of the
+  asynchronous call are already unwrapped). `GatewayUtils.toMoleculerError(cause)`
+  converts it to the `MoleculerError` the default response would send, so a
+  handler can reuse its status code (`getCode()`), `getType()` or `getData()`
+  and only change the body layout.
+- `currentRoute` is `null` (and `req` may be `null`) when the error occurred
+  before the request was routed.
+- If the handler throws before it has written anything, the gateway logs the
+  failure and sends the default JSON response for the original error; if it
+  throws after it started writing, the partial response is ended as-is.
+- "404 Not Found" is not an error in this sense: unknown paths are handled by
+  the `NotFound` middleware (see the `lastMiddleware` of the gateway).
+
+Without writing code, the `ErrorPage` middleware can also replace the
+default 4xx/5xx JSON bodies with HTML pages (see the middleware section).
+
 ## Response type & status code
 
 When the response is received from an `Action`,
@@ -448,6 +503,19 @@ Since `PacketStream` has no "meta", it needs to be wrapped in a
     return rsp;
 };
 ```
+
+::: tip How a streamed response is framed
+If the length of the streamed content is known in advance, set the
+"Content-Length" header (see the next example) - the response is then sent
+with that length. When the length is unknown (the usual case for a
+`PacketStream`), the standalone Netty server sends the body with
+`Transfer-Encoding: chunked`, so the connection stays reusable (keep-alive)
+and a stream that breaks in the middle arrives as a detectably incomplete
+response instead of a silently truncated one. Only HTTP/1.0 clients, which
+do not understand chunked transfer, get a connection-delimited body closed
+with `Connection: close`. In a servlet container the same decision is made
+by the container itself.
+:::
 
 **Example: Dynamic content generation**
 
